@@ -240,50 +240,50 @@ $posts = [
             </div>
         </div>
         <div class="popular__posts">
-        <?php foreach ($posts as $key => $val): ?>
-            <article class="popular__post post">
+        <?php foreach ($posts as $post): ?>
+            <article class="popular__post post <?=$post['type']; ?>">
                 <header class="post__header">
-                    <h2><?=$val['title']; ?><!--здесь заголовок--></h2>
+                    <h2><?=$post['title']; ?><!--здесь заголовок--></h2>
                 </header>
                 <div class="post__main">
                     <!--здесь содержимое карточки-->
                     <!--содержимое для поста-цитаты-->
-                    <?php if ($val['type'] === "post-quote"): ?>
+                    <?php if ($post['type'] === "post-quote"): ?>
                     <blockquote>
                         <p>
                             <!--здесь текст-->
-                            <?=$val['value']; ?>
+                            <?=$post['value']; ?>
                         </p>
                         <cite>Неизвестный Автор</cite>
                     </blockquote>
                     <?php endif; ?>
 
                     <!--содержимое для поста-ссылки-->
-                    <?php if ($val['type'] === "post-link"): ?>
+                    <?php if ($post['type'] === "post-link"): ?>
                     <div class="post-link__wrapper">
-                        <a class="post-link__external" href="http://" title="Перейти по ссылке">
+                        <a class="post-link__external" href="http://<?=$post['value']; ?>" title="Перейти по ссылке">
                             <div class="post-link__info-wrapper">
                                 <div class="post-link__icon-wrapper">
                                     <img src="https://www.google.com/s2/favicons?domain=vitadental.ru" alt="Иконка">
                                 </div>
                                 <div class="post-link__info">
-                                    <h3><?=$val['title']; ?><!--здесь заголовок--></h3>
+                                    <h3><?=$post['title']; ?><!--здесь заголовок--></h3>
                                 </div>
                             </div>
-                            <span><?=$val['value']; ?><!--здесь ссылка--></span>
+                            <span><?=$post['value']; ?><!--здесь ссылка--></span>
                         </a>
                     </div>
                     <?php endif; ?>
 
                     <!--содержимое для поста-фото-->
-                    <?php if ($val['type'] === "post-photo"): ?>
+                    <?php if ($post['type'] === "post-photo"): ?>
                     <div class="post-photo__image-wrapper">
-                        <img src="img/<?=$val['value']; ?>" alt="Фото от пользователя" width="360" height="240">
+                        <img src="img/<?=$post['value']; ?>" alt="Фото от пользователя" width="360" height="240">
                     </div>
                     <?php endif; ?>
 
                     <!--содержимое для поста-видео-->
-                    <?php if ($val['type'] === "post-video"): ?>
+                    <?php if ($post['type'] === "post-video"): ?>
                     <div class="post-video__block">
                         <div class="post-video__preview">
                             <?=embed_youtube_cover(/* вставьте ссылку на видео */); ?>
@@ -299,8 +299,8 @@ $posts = [
                     <?php endif; ?>
 
                     <!--содержимое для поста-текста-->
-                    <?php if ($val['type'] === "post-text"): ?>
-                    <p><?=$val['value']; ?><!--здесь текст--></p>
+                    <?php if ($post['type'] === "post-text"): ?>
+                    <p><?=$post['value']; ?><!--здесь текст--></p>
                     <?php endif; ?>
                 </div>
                 <footer class="post__footer">
@@ -308,10 +308,10 @@ $posts = [
                         <a class="post__author-link" href="#" title="Автор">
                             <div class="post__avatar-wrapper">
                                 <!--укажите путь к файлу аватара-->
-                                <img class="post__author-avatar" src="img/<?=$val['avatar']; ?>" alt="Аватар пользователя">
+                                <img class="post__author-avatar" src="img/<?=$post['avatar']; ?>" alt="Аватар пользователя">
                             </div>
                             <div class="post__info">
-                                <b class="post__author-name"><?=$val['user_name']; ?><!--здесь имя пользоателя--></b>
+                                <b class="post__author-name"><?=$post['user_name']; ?><!--здесь имя пользоателя--></b>
                                 <time class="post__time" datetime="">дата</time>
                             </div>
                         </a>
