@@ -38,6 +38,27 @@ $posts = [
         'avatar' => 'userpic.jpg'
     ]
 ];
+
+function cut_string ($string, $length = 300) {
+    $words = explode(" ", $string);
+    $result_string = "<p>";
+    if (strlen($string) > $length){
+        $i = 0;
+        $current_length = 0;
+        $result_array = [];
+        while ($current_length < $length) {
+            $current_length = $current_length + strlen($words[$i]) + 1;
+            array_push($result_array, $words[$i]);
+            $i++;
+        }
+        $result_string = $result_string . implode(" ", $result_array) . "...</p>";
+        $result_string .= '<a class="post-text__more-link" href="#">Читать далее</a>';
+    } else {
+        $result_string = $result_string . $string . "</p>";
+    }
+    
+    return $result_string;
+}
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -300,7 +321,7 @@ $posts = [
 
                     <!--содержимое для поста-текста-->
                     <?php if ($post['type'] === "post-text"): ?>
-                    <p><?=$post['value']; ?><!--здесь текст--></p>
+                    <?=cut_string($post['value']); ?><!--здесь текст-->
                     <?php endif; ?>
                 </div>
                 <footer class="post__footer">
