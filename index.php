@@ -42,19 +42,21 @@ $posts = [
 function cut_string ($string, $length = 300) {
     $words = explode(" ", $string);
     $result_string = "<p>";
-    if (strlen($string) > $length){
+    if (mb_strlen($string) > $length){
         $i = 0;
-        $current_length = 0;
+        $current_length = -1;
         $result_array = [];
-        while ($current_length < $length) {
-            $current_length = $current_length + strlen($words[$i]) + 1;
-            array_push($result_array, $words[$i]);
+        do {
+            $current_length += mb_strlen($words[$i]) + 1;
+            if ($current_length < $length) {
+                array_push($result_array, $words[$i]);
+            }
             $i++;
-        }
-        $result_string = $result_string . implode(" ", $result_array) . "...</p>";
+        } while ($current_length < $length);
+        $result_string .= rtrim(implode(" ", $result_array), " .,?!:;") . "...</p>";
         $result_string .= '<a class="post-text__more-link" href="#">Читать далее</a>';
     } else {
-        $result_string = $result_string . $string . "</p>";
+        $result_string .= $string . "</p>";
     }
     
     return $result_string;
