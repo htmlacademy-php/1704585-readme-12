@@ -262,3 +262,51 @@ function generate_random_date($index)
 
     return $dt;
 }
+
+/**
+ * Функция обрезает длинну строки и возвращает итоговый HTML абзац
+ * @param string $string входящая строка
+ * @param $length максимальная длинна строки для обрезки, по умолчанию 300 символов
+ * @return string итоговый HTML абзац
+ */
+function cut_string ($string, $length = 300) {
+    $words = explode(" ", $string);
+    $result_string = "<p>";
+    if (mb_strlen($string) > $length){
+        $i = 0;
+        $current_length = -1;
+        $result_array = [];
+        do {
+            $current_length += mb_strlen($words[$i]) + 1;
+            if ($current_length < $length) {
+                array_push($result_array, $words[$i]);
+            }
+            $i++;
+        } while ($current_length < $length);
+        $result_string .= rtrim(implode(" ", $result_array), " .,?!:;") . "...</p>";
+        $result_string .= '<a class="post-text__more-link" href="#">Читать далее</a>';
+    } else {
+        $result_string .= $string . "</p>";
+    }
+    
+    return $result_string;
+}
+
+/**
+ * Фунуция фильтрует пользовательский архив с постами заменяя HTML-теги на HTML-мнемоники
+ * @param array $post массив с пользавательскими постами
+ * @return array массив с отфильтрованными данными
+ */
+function filter_posts ($posts) {
+    $new_posts = [];
+    foreach ($posts as $post) {
+        $new_post = [];
+        foreach ($post as $key => $string) {
+            if (is_string($string)) {
+                $new_post[$key] = htmlspecialchars($string);
+            }
+        }
+        array_push($new_posts , $new_post);
+    }
+    return $new_posts;
+}
