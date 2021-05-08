@@ -65,7 +65,7 @@ function cut_string ($string, $length = 300) {
 }
 
 function filter_data ($string) {
-    htmlspecialchars($string);
+    $text = htmlspecialchars($string);
     //$text = strip_tags($string);
     return $text;
 }
