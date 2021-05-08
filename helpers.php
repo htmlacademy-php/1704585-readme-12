@@ -310,3 +310,53 @@ function filter_posts ($posts) {
     }
     return $new_posts;
 }
+
+/**
+ * Функция добавляет дату к постам пользователей
+ * @param array &$posts ссылки на массив с постами пользователей
+ */
+function add_time_to_post (&$posts) {
+    foreach ($posts as $key => &$post) {
+        $post['datetime'] = generate_random_date($key);
+    }
+}
+
+/**
+ * Функция преобразовывает дату в относительный формат. Заменяет дату на сообщение сколько времени назад произошло событие
+ * @param string $datetime входящая дата
+ * @return string результирующая строка сообщения
+ */
+function make_datetime_relative ($datetime) {
+    $ts_input = strtotime($datetime);
+    $ts_now = time();
+    $count_minutes = floor(($ts_now - $ts_input) / 60);
+
+    $string = "";
+    $count = 0;
+
+    switch ($count_minutes) {
+        case $count_minutes < 60: 
+            $count = $count_minutes;
+            $string = $count . get_noun_plural_form($count, " минута", " минуты", " минут");
+            break;
+        case $count_minutes < 60 * 24:
+            $count = floor($count_minutes / 60);
+            $string = $count . get_noun_plural_form($count, " час", " часа", " часов");
+            break;
+        case $count_minutes < 60 * 24 * 7:
+            $count = floor($count_minutes / 60 / 24);
+            $string = $count . get_noun_plural_form($count, " день", " дня", " дней");
+            break;
+        case $count_minutes < 60 * 24 * 7 * 5:
+            $count = floor($count_minutes / 60 / 24 / 7);
+            $string = $count . get_noun_plural_form($count, " неделя", " недели", " недель");
+            break;
+        case $count_minutes > 60 * 24 * 7 * 5:
+            $count = floor($count_minutes / 60 / 24 / 31);
+            $string = $count . get_noun_plural_form($count, " месяц", " месяца", " месяцев");
+            break;
+    }
+
+    $string .= " назад";
+    return $string;
+}

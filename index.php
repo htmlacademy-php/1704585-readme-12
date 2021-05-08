@@ -41,6 +41,8 @@ $posts = [
     ]
 ];
 
+add_time_to_post($posts);
+
 $page_content = include_template('main.php', ['posts' => filter_posts($posts)]);
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
