@@ -41,49 +41,6 @@ $posts = [
     ]
 ];
 
-function cut_string ($string, $length = 300) {
-    $words = explode(" ", $string);
-    $result_string = "<p>";
-    if (mb_strlen($string) > $length){
-        $i = 0;
-        $current_length = -1;
-        $result_array = [];
-        do {
-            $current_length += mb_strlen($words[$i]) + 1;
-            if ($current_length < $length) {
-                array_push($result_array, $words[$i]);
-            }
-            $i++;
-        } while ($current_length < $length);
-        $result_string .= rtrim(implode(" ", $result_array), " .,?!:;") . "...</p>";
-        $result_string .= '<a class="post-text__more-link" href="#">Читать далее</a>';
-    } else {
-        $result_string .= $string . "</p>";
-    }
-    
-    return $result_string;
-}
-
-function filter_data ($string) {
-    $text = htmlspecialchars($string);
-    //$text = strip_tags($string);
-    return $text;
-}
-
-function filter_posts ($posts) {
-    $new_posts = [];
-    foreach ($posts as $post) {
-        $new_post = [];
-        foreach ($post as $key => $string) {
-            if (is_string($string)) {
-                $new_post[$key] = filter_data($string);
-            }
-        }
-        array_push($new_posts , $new_post);
-    }
-    return $new_posts;
-}
-
 $page_content = include_template('main.php', ['posts' => filter_posts($posts)]);
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
