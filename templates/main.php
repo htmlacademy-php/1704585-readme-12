@@ -156,7 +156,9 @@
                             </div>
                             <div class="post__info">
                                 <b class="post__author-name"><?=$post['user_name']; ?><!--здесь имя пользоателя--></b>
-                                <time class="post__time" datetime="">дата</time>
+                                <time class="post__time" datetime="<?=$post['datetime']; ?>" title="<?=date("d.m.Y H:i", strtotime($post['datetime'])); ?>">
+                                    <?=make_datetime_relative($post['datetime']); ?>
+                                </time>
                             </div>
                         </a>
                     </div>
