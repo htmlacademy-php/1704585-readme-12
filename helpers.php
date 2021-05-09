@@ -329,7 +329,7 @@ function add_time_to_post (&$posts) {
 function make_datetime_relative ($datetime) {
     $ts_input = strtotime($datetime);
     $ts_now = time();
-    $count_minutes = floor(($ts_now - $ts_input) / 60);
+    $count_minutes = ceil(($ts_now - $ts_input) / 60);
 
     $string = "";
     $count = 0;
@@ -340,19 +340,19 @@ function make_datetime_relative ($datetime) {
             $string = $count . get_noun_plural_form($count, " минута", " минуты", " минут");
             break;
         case $count_minutes < 60 * 24:
-            $count = floor($count_minutes / 60);
+            $count = ceil($count_minutes / 60);
             $string = $count . get_noun_plural_form($count, " час", " часа", " часов");
             break;
         case $count_minutes < 60 * 24 * 7:
-            $count = floor($count_minutes / 60 / 24);
+            $count = ceil($count_minutes / 60 / 24);
             $string = $count . get_noun_plural_form($count, " день", " дня", " дней");
             break;
         case $count_minutes < 60 * 24 * 7 * 5:
-            $count = floor($count_minutes / 60 / 24 / 7);
+            $count = ceil($count_minutes / 60 / 24 / 7);
             $string = $count . get_noun_plural_form($count, " неделя", " недели", " недель");
             break;
-        case $count_minutes > 60 * 24 * 7 * 5:
-            $count = floor($count_minutes / 60 / 24 / 31);
+        default:
+            $count = ceil($count_minutes / 60 / 24 / 31);
             $string = $count . get_noun_plural_form($count, " месяц", " месяца", " месяцев");
             break;
     }

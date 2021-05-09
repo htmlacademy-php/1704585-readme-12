@@ -149,14 +149,14 @@
                 </div>
                 <footer class="post__footer">
                     <div class="post__author">
-                        <a class="post__author-link" href="#" title="<?=date("d.m.Y H:i", strtotime($post['datetime'])); ?>">
+                        <a class="post__author-link" href="#" title="Автор">
                             <div class="post__avatar-wrapper">
                                 <!--укажите путь к файлу аватара-->
                                 <img class="post__author-avatar" src="img/<?=$post['avatar']; ?>" alt="Аватар пользователя">
                             </div>
                             <div class="post__info">
                                 <b class="post__author-name"><?=$post['user_name']; ?><!--здесь имя пользоателя--></b>
-                                <time class="post__time" datetime="<?=$post['datetime']; ?>">
+                                <time class="post__time" datetime="<?=$post['datetime']; ?>" title="<?=date("d.m.Y H:i", strtotime($post['datetime'])); ?>">
                                     <?=make_datetime_relative($post['datetime']); ?>
                                 </time>
                             </div>
