@@ -19,6 +19,9 @@ CREATE TABLE users (
     dt_add TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE INDEX us_name_index ON users (us_name) USING BTREE;
+CREATE INDEX email_index ON users (email) USING BTREE;
+
 CREATE TABLE posts (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(128),
