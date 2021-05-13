@@ -12,28 +12,28 @@ CREATE TABLE types (
 
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    us_name VARCHAR(128) NOT NULL UNIQUE, 
-    us_password VARCHAR(64) NOT NULL UNIQUE,
+    name VARCHAR(128) NOT NULL UNIQUE, 
+    password VARCHAR(64) NOT NULL,
     email VARCHAR(128) NOT NULL UNIQUE,
     avatar_img VARCHAR(128),
-    dt_add TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX us_name_index ON users (us_name) USING BTREE;
+CREATE INDEX name_index ON users (name) USING BTREE;
 CREATE INDEX email_index ON users (email) USING BTREE;
 
 CREATE TABLE posts (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(128),
+    title VARCHAR(128) NOT NULL,
     content TEXT,
-    autor VARCHAR(128),
+    author VARCHAR(128),
     img VARCHAR(128),
     video VARCHAR(128),
     link VARCHAR(128),
     show_count INT,
-    dt_add TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    user_id INT,
-    post_type INT,
+    published_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    user_id INT NOT NULL,
+    post_type INT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
     FOREIGN KEY (post_type) REFERENCES types (id)
 );
@@ -41,25 +41,26 @@ CREATE TABLE posts (
 CREATE TABLE comments (
     id INT AUTO_INCREMENT PRIMARY KEY,
     comment TEXT,
-    dt_add TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    user_id INT,
-    post_id INT,
+    published_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    user_id INT NOT NULL,
+    post_id INT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
     FOREIGN KEY (post_id) REFERENCES posts (id) ON DELETE CASCADE
 );
 
 CREATE TABLE likes (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
-    post_id INT,
+    user_id INT NOT NULL,
+    post_id INT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
-    FOREIGN KEY (post_id) REFERENCES posts (id) ON DELETE CASCADE
+    FOREIGN KEY (post_id) REFERENCES posts (id) ON DELETE CASCADE,
+    UNIQUE KEY unique_likes_idx (user_id, post_id)
 );
 
-CREATE TABLE subscribes (
+CREATE TABLE subscriptions (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
-    to_user_id INT,
+    user_id INT NOT NULL,
+    to_user_id INT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
     FOREIGN KEY (to_user_id) REFERENCES users (id) ON DELETE CASCADE
 );
@@ -67,8 +68,9 @@ CREATE TABLE subscribes (
 CREATE TABLE messages (
     id INT AUTO_INCREMENT PRIMARY KEY,
     content TEXT,
-    from_user_id INT,
-    to_user_id INT,
+    published_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    from_user_id INT NOT NULL,
+    to_user_id INT NOT NULL,
     FOREIGN KEY (from_user_id) REFERENCES users (id) ON DELETE CASCADE,
     FOREIGN KEY (to_user_id) REFERENCES users (id) ON DELETE CASCADE
 );
@@ -78,10 +80,10 @@ CREATE TABLE hashtags (
     hash_name VARCHAR(128) NOT NULL UNIQUE
 );
 
-CREATE TABLE link_hashtags (
+CREATE TABLE posts_hashtags (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    post_id INT,
-    hash_id INT,
+    post_id INT NOT NULL,
+    hash_id INT NOT NULL,
     FOREIGN KEY (post_id) REFERENCES posts (id) ON DELETE CASCADE,
     FOREIGN KEY (hash_id) REFERENCES hashtags (id) ON DELETE CASCADE
 );
