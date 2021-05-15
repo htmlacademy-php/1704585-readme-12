@@ -2,11 +2,11 @@
 Вносим список типов контента для поста
 */
 INSERT INTO types (type_name, icon_class) VALUES
-    ('post-text', 'icon-text'), 
-    ('post-photo', 'icon-photo'),
-    ('post-link', 'icon-link'), 
-    ('post-quote', 'icon-quote'), 
-    ('post-video', 'icon-video');
+    ('Текст', 'text'), 
+    ('Картинка', 'photo'),
+    ('Ссылка', 'link'), 
+    ('Цитата', 'quote'), 
+    ('Видео', 'video');
 
 /*
 Создаем несколько пользователей
@@ -98,7 +98,7 @@ VALUES
 /*
 Получает список постов с сортировкой по популярности с именами авторов и типом контента
 */
-SELECT title, content, img, link, show_count, published_at, name, type_name 
+SELECT p.*, name, type_name 
 FROM posts p 
     JOIN users us ON p.user_id = us.id
     JOIN types tp ON p.post_type = tp.id
