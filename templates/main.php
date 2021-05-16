@@ -40,72 +40,42 @@
                             <span>Все</span>
                         </a>
                     </li>
-                    <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--photo button" href="#">
-                            <span class="visually-hidden">Фото</span>
-                            <svg class="filters__icon" width="22" height="18">
-                                <use xlink:href="#icon-filter-photo"></use>
-                            </svg>
-                        </a>
-                    </li>
-                    <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--video button" href="#">
-                            <span class="visually-hidden">Видео</span>
-                            <svg class="filters__icon" width="24" height="16">
-                                <use xlink:href="#icon-filter-video"></use>
-                            </svg>
-                        </a>
-                    </li>
-                    <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--text button" href="#">
-                            <span class="visually-hidden">Текст</span>
-                            <svg class="filters__icon" width="20" height="21">
-                                <use xlink:href="#icon-filter-text"></use>
-                            </svg>
-                        </a>
-                    </li>
-                    <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--quote button" href="#">
-                            <span class="visually-hidden">Цитата</span>
-                            <svg class="filters__icon" width="21" height="20">
-                                <use xlink:href="#icon-filter-quote"></use>
-                            </svg>
-                        </a>
-                    </li>
-                    <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--link button" href="#">
-                            <span class="visually-hidden">Ссылка</span>
-                            <svg class="filters__icon" width="21" height="18">
-                                <use xlink:href="#icon-filter-link"></use>
-                            </svg>
-                        </a>
-                    </li>
+                    <?php foreach ($post_types as $types): ?>
+                        <li class="popular__filters-item filters__item">
+                            <a class="filters__button filters__button--<?=$types['icon_class']; ?> button" href="#">
+                                <span class="visually-hidden"><?=$types['type_name']; ?></span>
+                                <svg class="filters__icon" width="22" height="18">
+                                    <use xlink:href="#icon-filter-<?=$types['icon_class']; ?>"></use>
+                                </svg>
+                            </a>
+                        </li>
+                    <?php endforeach; ?>
                 </ul>
             </div>
         </div>
         <div class="popular__posts">
         <?php foreach ($posts as $post): ?>
-            <article class="popular__post post <?=$post['type']; ?>">
+            <article class="popular__post post <?='post-' . $post['class']; ?>">
                 <header class="post__header">
                     <h2><?=$post['title']; ?><!--здесь заголовок--></h2>
                 </header>
                 <div class="post__main">
                     <!--здесь содержимое карточки-->
                     <!--содержимое для поста-цитаты-->
-                    <?php if ($post['type'] === "post-quote"): ?>
+                    <?php if ($post['type'] === "Цитата"): ?>
                     <blockquote>
                         <p>
                             <!--здесь текст-->
-                            <?=$post['value']; ?>
+                            <?=$post['content']; ?>
                         </p>
                         <cite>Неизвестный Автор</cite>
                     </blockquote>
                     <?php endif; ?>
 
                     <!--содержимое для поста-ссылки-->
-                    <?php if ($post['type'] === "post-link"): ?>
+                    <?php if ($post['type'] === "Ссылка"): ?>
                     <div class="post-link__wrapper">
-                        <a class="post-link__external" href="http://<?=$post['value']; ?>" title="Перейти по ссылке">
+                        <a class="post-link__external" href="http://<?=$post['link']; ?>" title="Перейти по ссылке">
                             <div class="post-link__info-wrapper">
                                 <div class="post-link__icon-wrapper">
                                     <img src="https://www.google.com/s2/favicons?domain=vitadental.ru" alt="Иконка">
@@ -114,20 +84,20 @@
                                     <h3><?=$post['title']; ?><!--здесь заголовок--></h3>
                                 </div>
                             </div>
-                            <span><?=$post['value']; ?><!--здесь ссылка--></span>
+                            <span><?=$post['link']; ?><!--здесь ссылка--></span>
                         </a>
                     </div>
                     <?php endif; ?>
 
                     <!--содержимое для поста-фото-->
-                    <?php if ($post['type'] === "post-photo"): ?>
+                    <?php if ($post['type'] === "Картинка"): ?>
                     <div class="post-photo__image-wrapper">
-                        <img src="img/<?=$post['value']; ?>" alt="Фото от пользователя" width="360" height="240">
+                        <img src="img/<?=$post['img']; ?>" alt="Фото от пользователя" width="360" height="240">
                     </div>
                     <?php endif; ?>
 
                     <!--содержимое для поста-видео-->
-                    <?php if ($post['type'] === "post-video"): ?>
+                    <?php if ($post['type'] === "Видео"): ?>
                     <div class="post-video__block">
                         <div class="post-video__preview">
                             <?=embed_youtube_cover(/* вставьте ссылку на видео */); ?>
@@ -143,8 +113,8 @@
                     <?php endif; ?>
 
                     <!--содержимое для поста-текста-->
-                    <?php if ($post['type'] === "post-text"): ?>
-                    <?=cut_string($post['value']); ?><!--здесь текст-->
+                    <?php if ($post['type'] === "Текст"): ?>
+                    <?=cut_string($post['content']); ?><!--здесь текст-->
                     <?php endif; ?>
                 </div>
                 <footer class="post__footer">
@@ -155,9 +125,9 @@
                                 <img class="post__author-avatar" src="img/<?=$post['avatar']; ?>" alt="Аватар пользователя">
                             </div>
                             <div class="post__info">
-                                <b class="post__author-name"><?=$post['user_name']; ?><!--здесь имя пользоателя--></b>
-                                <time class="post__time" datetime="<?=$post['datetime']; ?>" title="<?=date("d.m.Y H:i", strtotime($post['datetime'])); ?>">
-                                    <?=make_datetime_relative($post['datetime']); ?>
+                                <b class="post__author-name"><?=$post['name']; ?><!--здесь имя пользоателя--></b>
+                                <time class="post__time" datetime="<?=$post['published_at']; ?>" title="<?=date("d.m.Y H:i", strtotime($post['published_at'])); ?>">
+                                    <?=make_datetime_relative($post['published_at']); ?>
                                 </time>
                             </div>
                         </a>
