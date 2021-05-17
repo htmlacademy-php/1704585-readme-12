@@ -360,3 +360,18 @@ function make_datetime_relative ($datetime) {
     $string .= " назад";
     return $string;
 }
+
+/**
+ * Функция выполняет запрос SELECT и возвращает из базы готовый массив с запрошенными данными
+ * @param link подключение к базе данных
+ * @param string строка запроса на выборку данных
+ * @return array готовый массив с данными
+ */
+function make_select_query ($db_link, $sql) {
+    $result = mysqli_query($db_link, $sql);
+    if ($result) {
+        return mysqli_fetch_all($result, MYSQLI_ASSOC);
+    } else {
+        print("Ошибка запроса: " . mysqli_error($db_link));
+    }
+}

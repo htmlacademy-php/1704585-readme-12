@@ -3,7 +3,8 @@ require_once('helpers.php');
 
 $is_auth = rand(0, 1);
 $user_name = 'Дмитрий'; // укажите здесь ваше имя
-$posts = [
+/*
+$posts1 = [
     [
         'title' => 'Цитата',
         'type' => 'post-quote',
@@ -40,12 +41,35 @@ $posts = [
         'avatar' => 'userpic.jpg'
     ]
 ];
+*/
+
+$post_types = [];
+$posts = [];
+
+$db_link = mysqli_connect("127.0.0.1", "root", "root", "readme");
+if ($db_link == false) {
+    print("Ошибка подключения: " . mysqli_connect_error());
+} else {
+    mysqli_set_charset($db_link, "utf8");
+
+    $post_types = make_select_query($db_link, "SELECT * FROM types;");
+
+    $posts = make_select_query ($db_link, 
+        "SELECT p.*, name, avatar_img AS avatar, type_name AS type, icon_class AS class
+        FROM posts p 
+            JOIN users us ON p.user_id = us.id
+            JOIN types tp ON p.post_type = tp.id
+        ORDER BY show_count DESC LIMIT 6;");   
+}
 
 date_default_timezone_set("Asia/Yekaterinburg");
 
-add_time_to_post($posts);
+//add_time_to_post($posts);
 
-$page_content = include_template('main.php', ['posts' => filter_posts($posts)]);
+$page_content = include_template('main.php', [
+    'posts' => filter_posts($posts),
+    'post_types' => $post_types
+    ]);
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'is_auth' => $is_auth,
