@@ -324,9 +324,10 @@ function add_time_to_post (&$posts) {
 /**
  * Функция преобразовывает дату в относительный формат. Заменяет дату на сообщение сколько времени назад произошло событие
  * @param string $datetime входящая дата
+ * @param string $end_string окончание сообщения о времени, по умолчанию = назад
  * @return string результирующая строка сообщения
  */
-function make_datetime_relative ($datetime) {
+function make_datetime_relative ($datetime, $end_string = " назад") {
     $ts_input = strtotime($datetime);
     $ts_now = time();
     $count_minutes = ceil(($ts_now - $ts_input) / 60);
@@ -351,27 +352,34 @@ function make_datetime_relative ($datetime) {
             $count = ceil($count_minutes / 60 / 24 / 7);
             $string = $count . get_noun_plural_form($count, " неделя", " недели", " недель");
             break;
-        default:
+        case $count_minutes < 60 * 24 * 365:
             $count = ceil($count_minutes / 60 / 24 / 31);
             $string = $count . get_noun_plural_form($count, " месяц", " месяца", " месяцев");
             break;
+        default:
+            $count = ceil($count_minutes / 60 / 24 / 365);
+            $string = $count . get_noun_plural_form($count, " год", " года", " лет");
     }
 
-    $string .= " назад";
+    $string .= $end_string;
     return $string;
 }
 
 /**
  * Функция выполняет запрос SELECT и возвращает из базы готовый массив с запрошенными данными
- * @param link подключение к базе данных
- * @param string строка запроса на выборку данных
+ * @param mysqli $db_link подключение к базе данных
+ * @param string $sql строка запроса на выборку данных
+ * @param boolean $one параметр определяет возвращаемый результат двумерный массив или просто массив с данными, по умолчанию false
  * @return array готовый массив с данными
  */
-function make_select_query ($db_link, $sql) {
+function make_select_query ($db_link, $sql, $one = false) {
     $result = mysqli_query($db_link, $sql);
     if ($result) {
-        return mysqli_fetch_all($result, MYSQLI_ASSOC);
-    } else {
-        print("Ошибка запроса: " . mysqli_error($db_link));
+        if($one) {
+            return mysqli_fetch_assoc($result);
+        } else {
+            return mysqli_fetch_all($result, MYSQLI_ASSOC);
+        }
     }
+    print("Ошибка запроса: " . mysqli_error($db_link));
 }

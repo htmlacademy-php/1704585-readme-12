@@ -3,72 +3,69 @@ require_once('helpers.php');
 
 $is_auth = rand(0, 1);
 $user_name = 'Дмитрий'; // укажите здесь ваше имя
-/*
-$posts1 = [
+
+$sort_types = [
     [
-        'title' => 'Цитата',
-        'type' => 'post-quote',
-        'value' => 'Мы в жизни любим только раз, а после ищем лишь похожих',
-        'user_name' => 'Лариса',
-        'avatar' => 'userpic-larisa-small.jpg'
+        'id' => '1',
+        'title' => 'Популярность',
+        'order_by' => 'show_count'
     ],
     [
-        'title' => 'Игра престолов',
-        'type' => 'post-text',
-        'value' => 'Не могу дождаться начала финального сезона своего любимого сериала!',
-        'user_name' => 'Владик',
-        'avatar' => 'userpic.jpg'
+        'id' => '2',
+        'title' => 'Лайки',
+        'order_by' => 'likes'
     ],
     [
-        'title' => 'Наконец, обработал фотки!',
-        'type' => 'post-photo',
-        'value' => 'rock-medium.jpg',
-        'user_name' => 'Виктор',
-        'avatar' => 'userpic-mark.jpg'
-    ],
-    [
-        'title' => 'Моя мечта',
-        'type' => 'post-photo',
-        'value' => 'coast-medium.jpg',
-        'user_name' => 'Лариса',
-        'avatar' => 'userpic-larisa-small.jpg'
-    ],
-    [
-        'title' => 'Лучшие курсы',
-        'type' => 'post-link',
-        'value' => 'www.htmlacademy.ru',
-        'user_name' => 'Владик',
-        'avatar' => 'userpic.jpg'
-    ]
+        'id' => '3',
+        'title' => 'Дата',
+        'order_by' => 'published_at'
+    ] 
 ];
-*/
 
 $post_types = [];
 $posts = [];
+$id = 0;
+$sort = 1;
 
 $db_link = mysqli_connect("127.0.0.1", "root", "root", "readme");
 if ($db_link == false) {
     print("Ошибка подключения: " . mysqli_connect_error());
 } else {
     mysqli_set_charset($db_link, "utf8");
-
+    
     $post_types = make_select_query($db_link, "SELECT * FROM types;");
 
+    if (isset($_GET['id'])) {
+        $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+    }
+    if (isset($_GET['order_by'])) {
+        $sort = filter_input(INPUT_GET, 'order_by', FILTER_SANITIZE_NUMBER_INT);
+    }
+    
+    $condition = "";
+
+    if ($id) {
+        $condition = "WHERE tp.id = $id";
+    }
     $posts = make_select_query ($db_link, 
-        "SELECT p.*, name, avatar_img AS avatar, type_name AS type, icon_class AS class
+        "SELECT p.*, name, avatar_img AS avatar, type_name AS type, icon_class AS class, COUNT(c.id) AS comments, COUNT(l.id) AS likes
         FROM posts p 
             JOIN users us ON p.user_id = us.id
-            JOIN types tp ON p.post_type = tp.id
-        ORDER BY show_count DESC LIMIT 6;");   
+            JOIN types tp ON p.post_type = tp.id 
+            LEFT JOIN comments c ON p.id = c.post_id
+            LEFT JOIN likes l ON l.post_id = p.id " .
+        $condition .
+        " GROUP BY p.id ORDER BY " . $sort_types[$sort - 1]['order_by'] . " DESC LIMIT 6;");
 }
 
 date_default_timezone_set("Asia/Yekaterinburg");
 
-//add_time_to_post($posts);
-
 $page_content = include_template('main.php', [
     'posts' => filter_posts($posts),
-    'post_types' => $post_types
+    'post_types' => $post_types,
+    'sort_types' => $sort_types,
+    'id' => $id,
+    'sort' => $sort
     ]);
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
