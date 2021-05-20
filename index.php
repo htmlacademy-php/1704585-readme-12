@@ -6,17 +6,17 @@ $user_name = 'Дмитрий'; // укажите здесь ваше имя
 
 $sort_types = [
     [
-        'id' => 1,
+        'id' => '1',
         'title' => 'Популярность',
         'order_by' => 'show_count'
     ],
     [
-        'id' => 2,
+        'id' => '2',
         'title' => 'Лайки',
         'order_by' => 'likes'
     ],
     [
-        'id' => 3,
+        'id' => '3',
         'title' => 'Дата',
         'order_by' => 'published_at'
     ] 
@@ -35,20 +35,24 @@ if ($db_link == false) {
     
     $post_types = make_select_query($db_link, "SELECT * FROM types;");
 
-    $id = filter_input(INPUT_GET, 'id');
-    if (isset($_GET['order_by'])) {
-        $sort = filter_input(INPUT_GET, 'order_by');
+    if (isset($_GET['id'])) {
+        $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
     }
+    if (isset($_GET['order_by'])) {
+        $sort = filter_input(INPUT_GET, 'order_by', FILTER_SANITIZE_NUMBER_INT);
+    }
+    
     $condition = "";
 
     if ($id) {
         $condition = "WHERE tp.id = $id";
     }
     $posts = make_select_query ($db_link, 
-        "SELECT p.*, name, avatar_img AS avatar, type_name AS type, icon_class AS class, COUNT(l.id) AS likes
+        "SELECT p.*, name, avatar_img AS avatar, type_name AS type, icon_class AS class, COUNT(c.id) AS comments, COUNT(l.id) AS likes
         FROM posts p 
             JOIN users us ON p.user_id = us.id
             JOIN types tp ON p.post_type = tp.id 
+            LEFT JOIN comments c ON p.id = c.post_id
             LEFT JOIN likes l ON l.post_id = p.id " .
         $condition .
         " GROUP BY p.id ORDER BY " . $sort_types[$sort - 1]['order_by'] . " DESC LIMIT 6;");

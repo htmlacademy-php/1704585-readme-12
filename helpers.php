@@ -369,12 +369,17 @@ function make_datetime_relative ($datetime, $end_string = " назад") {
  * Функция выполняет запрос SELECT и возвращает из базы готовый массив с запрошенными данными
  * @param mysqli $db_link подключение к базе данных
  * @param string $sql строка запроса на выборку данных
+ * @param boolean $one параметр определяет возвращаемый результат двумерный массив или просто массив с данными, по умолчанию false
  * @return array готовый массив с данными
  */
-function make_select_query ($db_link, $sql) {
+function make_select_query ($db_link, $sql, $one = false) {
     $result = mysqli_query($db_link, $sql);
     if ($result) {
-        return mysqli_fetch_all($result, MYSQLI_ASSOC);
+        if($one) {
+            return mysqli_fetch_assoc($result);
+        } else {
+            return mysqli_fetch_all($result, MYSQLI_ASSOC);
+        }
     }
     print("Ошибка запроса: " . mysqli_error($db_link));
 }

@@ -9,7 +9,8 @@
                     <ul class="popular__sorting-list sorting__list">
                         <?php foreach ($sort_types as $sort_type): ?>
                             <li class="sorting__item">
-                                <a class="sorting__link<?php if($sort === $sort_type['id']): ?> sorting__link--active <?php endif; ?>" href="/?order_by=<?=$sort_type['id']; ?>">
+                                <a class="sorting__link<?php if($sort === $sort_type['id']): ?> sorting__link--active <?php endif; ?>" 
+                                href="/?<?=http_build_query(array_merge($_GET, [ 'order_by' => $sort_type['id'] ])); ?>">
                                     <span><?=$sort_type['title']; ?></span>
                                     <svg class="sorting__icon" width="10" height="12">
                                         <use xlink:href="#icon-sort"></use>
@@ -24,15 +25,16 @@
                     <ul class="popular__filters-list filters__list">
                         <li class="popular__filters-item popular__filters-item--all filters__item filters__item--all">
                             <a class="filters__button filters__button--ellipse filters__button--all
-                                    <?php if(!$id): ?> filters__button--active <?php endif; ?>" href="/">
+                            <?php if(!$id): ?> filters__button--active <?php endif; ?>" 
+                            href="/?<?=http_build_query(array_merge($_GET, ['id' => 0])); ?>">
                                 <span>Все</span>
                             </a>
                         </li>
                         <?php foreach ($post_types as $types): ?>
                             <li class="popular__filters-item filters__item">
                                 <a class="filters__button filters__button--<?=$types['icon_class']; ?> button
-                                        <?php if($id === $types['id']): ?> filters__button--active <?php endif; ?>" 
-                                        href="/?id=<?=$types['id']; ?>">
+                                <?php if($id === $types['id']): ?> filters__button--active <?php endif; ?>" 
+                                href="/?<?=http_build_query(array_merge($_GET, [ 'id' => $types['id'] ])); ?>">
                                     <span class="visually-hidden"><?=$types['type_name']; ?></span>
                                     <svg class="filters__icon" width="22" height="18">
                                         <use xlink:href="#icon-filter-<?=$types['icon_class']; ?>"></use>
@@ -131,14 +133,14 @@
                                     <svg class="post__indicator-icon post__indicator-icon--like-active" width="20" height="17">
                                         <use xlink:href="#icon-heart-active"></use>
                                     </svg>
-                                    <span>0</span>
+                                    <span><?=$post['likes']; ?></span>
                                     <span class="visually-hidden">количество лайков</span>
                                 </a>
                                 <a class="post__indicator post__indicator--comments button" href="#" title="Комментарии">
                                     <svg class="post__indicator-icon" width="19" height="17">
                                         <use xlink:href="#icon-comment"></use>
                                     </svg>
-                                    <span>0</span>
+                                    <span><?=$post['comments']; ?></span>
                                     <span class="visually-hidden">количество комментариев</span>
                                 </a>
                             </div>
