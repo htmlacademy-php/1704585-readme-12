@@ -3,6 +3,7 @@ require_once('helpers.php');
 
 $is_auth = 1;
 $user_name = "Дмитрий";
+$add_form = false;
 
 $id = 0;
 $post = [];
@@ -69,7 +70,8 @@ $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'is_auth' => $is_auth,
     'user_name' => $user_name,
-    'title' => 'readme: публикация'
+    'title' => 'readme: публикация',
+    'add_form' => $add_form
     ]);
 
 print($layout_content);
