@@ -3,6 +3,7 @@ require_once('helpers.php');
 
 $is_auth = 1;
 $user_name = "Дмитрий";
+$add_form = false;
 
 $id = 0;
 $post = [];
@@ -50,6 +51,12 @@ if ($db_link == false) {
         WHERE c.post_id = $id
         ORDER BY published_at DESC LIMIT 4;"
         );
+
+        $tags = make_select_query($db_link, 
+            "SELECT hash_name AS tag FROM hashtags h 
+            JOIN posts_hashtags ph ON h.id = ph.hash_id
+            WHERE ph.post_id = $id;"
+        );
     }
 }
 
@@ -63,13 +70,15 @@ $page_content = include_template('post-main.php', [
     'content' => $post_content,
     'post' => $post,
     'user' => $user,
-    'comments' => $comments
+    'comments' => $comments,
+    'tags' => $tags
     ]);
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'is_auth' => $is_auth,
     'user_name' => $user_name,
-    'title' => 'readme: публикация'
+    'title' => 'readme: публикация',
+    'add_form' => $add_form
     ]);
 
 print($layout_content);

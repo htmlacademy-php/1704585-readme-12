@@ -377,9 +377,125 @@ function make_select_query ($db_link, $sql, $one = false) {
     if ($result) {
         if($one) {
             return mysqli_fetch_assoc($result);
-        } else {
-            return mysqli_fetch_all($result, MYSQLI_ASSOC);
         }
+        return mysqli_fetch_all($result, MYSQLI_ASSOC);
     }
     print("Ошибка запроса: " . mysqli_error($db_link));
+}
+
+/**
+ * Функция возвращает значение поля формы после отправки
+ * @param string $name имя поля формы
+ * @return string значение поля формы
+ */
+function getPostVal ($name) {
+    return filter_input(INPUT_POST, $name);
+}
+
+/**
+ * Функция проверяет заполнено ли поле формы
+ * @param string $value содержимое поля формы
+ * @param string $title название поля формы
+ * @return string сообщение об ошибке или null если поле заполнено
+ */
+function validateFilled ($value, $title) {
+    if (empty($value)) {
+        return $title . ". Это поле должно быть заполнено.";
+    }
+    return null;
+}
+
+/**
+ * Функция проверяет длину текстового поля на превышение максимального значения
+ * @param string $value содержимое поля формы
+ * @param int $max максимально допустимое значение длины поля
+ * @param string $title название поля формы
+ * @return string сообщение об ошибке или null если ошибок нет
+ */
+function validateFilledLength ($value, $max, $title) {
+    $notEmpty = validateFilled($value, $title);
+    if (!$notEmpty) {
+        $length = mb_strlen($value);
+        if ($length > $max) {
+            return "Текст не должен превышать " . $max . " знаков.";
+        }
+        return null;
+    } 
+    return $notEmpty;
+}
+
+/**
+ * Функция проверяет правильность ссылки
+ * @param string $value содержимое поля формы
+ * @param string $title название поля формы
+ * @param boolean $video указатель на ссылку с Youtube, по умолчанию false
+ * @return string сообщение об ошибке или null если ошибок нет
+ */
+function validateUrl ($value, $title, $video = false) {
+    $notEmpty = validateFilled($value, $title);
+    if (!$notEmpty) {
+        if (!filter_var($value, FILTER_VALIDATE_URL)) {
+            return "Введен некорректный URL.";
+        } elseif (!$video && !check_youtube_url($value)) {
+            return "Видео не существует!";
+        }
+        return null;
+    }
+    return $notEmpty;
+}
+
+/**
+ * Функция возвращает тип файла
+ * @param string $file файл у которого проверяется тип
+ * @return string тип файла
+ */
+function getFileType ($file) {
+    return image_type_to_mime_type(exif_imagetype($file));
+}
+
+/**
+ * Функция проверки соответствия типов файла
+ * @param string $file_type тип файла
+ * @param array $available_types массив с допустимыми типами файлов
+ * @return string возвращает ошибку если тип файла не соответствует допустимым типам, иначе возвращает null
+ */
+function validateFileType ($file_type, $available_types) {
+    if(in_array($file_type, $available_types)) {
+        return null;
+    }
+    return "Неверный формат файла. Файл может быть PNG, JPEG или GIF.";
+}
+
+/**
+ * Функция заполнения полей поста для запроса
+ * @param array $post входящий массив с данными поста
+ * @param array $fields список полей базы данных постов
+ * @return array заполненный массив поста
+ */
+function fillArray ($post, $fields) {
+    $result = [];
+
+    foreach ($fields as $key => $field) {
+        if(isset($post[$field])) {
+            $result[$field] = $post[$field];
+        } else {
+            $result[$field] = null;
+        }
+    }
+
+    return $result;
+}
+
+/**
+ * Функция проверяет теги на соответствие формату допустимых символов
+ * @param array $tags входящий массив с тегами
+ * @return string возвращает ошибку или null если все в порядке
+ */
+function validate_tags ($tags) {
+    foreach($tags as $key => $value) {
+        if (!preg_match('/^[a-zа-яё0-9_-]+$/ui', $value)) {
+            return "Неверный формат тегов";
+        }
+    }
+    return null;
 }

@@ -25,8 +25,8 @@
                     <ul class="popular__filters-list filters__list">
                         <li class="popular__filters-item popular__filters-item--all filters__item filters__item--all">
                             <a class="filters__button filters__button--ellipse filters__button--all
-                            <?php if(!$id): ?> filters__button--active <?php endif; ?>" 
-                            href="/?<?=http_build_query(array_merge($_GET, ['id' => 0])); ?>">
+                            <?= is_null($id)? 'filters__button--active' : '' ?>" 
+                            href="/?<?=http_build_query(array_merge($_GET, ['id' => null])); ?>">
                                 <span>Все</span>
                             </a>
                         </li>
@@ -84,7 +84,7 @@
                         <!--содержимое для поста-фото-->
                         <?php if ($post['type'] === "Картинка"): ?>
                         <div class="post-photo__image-wrapper">
-                            <img src="img/<?=$post['img']; ?>" alt="Фото от пользователя" width="360" height="240">
+                            <img src="uploads/<?=$post['img']; ?>" alt="Фото от пользователя" width="360" height="240">
                         </div>
                         <?php endif; ?>
 
