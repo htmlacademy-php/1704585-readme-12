@@ -1,8 +1,9 @@
 <?php
 require_once('helpers.php');
 
-$is_auth = rand(0, 1);
+$is_auth = 1;
 $user_name = 'Дмитрий'; // укажите здесь ваше имя
+$add_form = false;
 
 $sort_types = [
     [
@@ -37,9 +38,13 @@ if ($db_link == false) {
 
     if (isset($_GET['id'])) {
         $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+    } else {
+        $id = null;
     }
     if (isset($_GET['order_by'])) {
         $sort = filter_input(INPUT_GET, 'order_by', FILTER_SANITIZE_NUMBER_INT);
+    } else {
+        $sort = '1';
     }
     
     $condition = "";
@@ -71,7 +76,8 @@ $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'is_auth' => $is_auth,
     'user_name' => $user_name,
-    'title' => 'readme: популярное'
+    'title' => 'readme: популярное',
+    'add_form' => $add_form
     ]);
 
 print($layout_content);
