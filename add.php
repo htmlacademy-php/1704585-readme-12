@@ -28,7 +28,7 @@ if ($db_link == false) {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $post = $_POST;
         
-        $required_fields = ['title', 'text', 'author', 'link', 'video_url'];
+        $required_fields = ['title', 'text', 'author', 'link', 'video'];
         $rules = [
             'title' => function ($value) {
                 return validateFilled($value, 'Заголовок');
@@ -45,7 +45,7 @@ if ($db_link == false) {
             'link' => function ($value) {
                 return validateUrl($value, 'Ссылка');
             },
-            'video_url' => function ($value) {
+            'video' => function ($value) {
                 return validateUrl($value, 'Ссылка Youtube', true);
             }
         ];
@@ -66,7 +66,7 @@ if ($db_link == false) {
                 $finfo = finfo_open(FILEINFO_MIME_TYPE);
                 $file_type = finfo_file($finfo, $tmp_name);
                 $valid_type = validateFileType($file_type, $avalable_file_types);
-                if(!valid_type) {
+                if(!$valid_type) {
                     move_uploaded_file($tmp_name, 'uploads/' . $img_name);
                     $post['img'] = $img_name;
                 }
@@ -80,7 +80,7 @@ if ($db_link == false) {
                 $file = file_get_contents($_POST['url']);
                 if ($file) {
                     $valid_type = validateFileType($file_type, $avalable_file_types);
-                    if (!valid_type) {
+                    if (!$valid_type) {
                         $img_name = pathinfo($_POST['url'], PATHINFO_BASENAME);
                         file_put_contents('uploads/' . $img_name, $file);
                         $post['img'] = $img_name;
@@ -160,6 +160,10 @@ if ($db_link == false) {
         }
     }
 }
+
+print('<pre>');
+print_r($post);
+print('</pre>');
 
 $add_file = "add-" . $post_types[$id - 1]['icon_class'] . ".php";
 
