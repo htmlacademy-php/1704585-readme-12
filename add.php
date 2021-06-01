@@ -161,10 +161,6 @@ if ($db_link == false) {
     }
 }
 
-print('<pre>');
-print_r($post);
-print('</pre>');
-
 $add_file = "add-" . $post_types[$id - 1]['icon_class'] . ".php";
 
 $add_content = include_template($add_file, [
