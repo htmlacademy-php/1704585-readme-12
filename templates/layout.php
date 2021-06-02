@@ -22,6 +22,7 @@
                 micro blogging
             </p>
         </div>
+        <?php if ($is_auth === 1): ?>
         <form class="header__search-form form" action="#" method="get">
             <div class="header__search">
                 <label class="visually-hidden">Поиск</label>
@@ -34,10 +35,10 @@
                 </button>
             </div>
         </form>
+        <?php endif; ?>
         <div class="header__nav-wrapper">
-            <!-- здесь должен быть PHP код, который показывает следующий тег по условию -->
-            <?php if ($is_auth === 1): ?>
             <nav class="header__nav">
+                <?php if ($is_auth === 1): ?>
                 <ul class="header__my-nav">
                     <li class="header__my-page header__my-page--popular">
                         <a class="header__page-link header__page-link--active" title="Популярный контент">
@@ -73,17 +74,17 @@
                             </div>
                         </a>
                         <div class="header__tooltip-wrapper">
-                            <div class="header__profile-tooltip">
-                                <ul class="header__profile-nav">
-                                    <li class="header__profile-nav-item">
-                                        <a class="header__profile-nav-link" href="#">
-                          <span class="header__profile-nav-text">
-                            Мой профиль
-                          </span>
-                                        </a>
-                                    </li>
-                                    <li class="header__profile-nav-item">
-                                        <a class="header__profile-nav-link" href="#">
+                        <div class="header__profile-tooltip">
+                            <ul class="header__profile-nav">
+                                <li class="header__profile-nav-item">
+                                    <a class="header__profile-nav-link" href="#">
+                                    <span class="header__profile-nav-text">
+                                        Мой профиль
+                                    </span>
+                                    </a>
+                                </li>
+                                <li class="header__profile-nav-item">
+                                    <a class="header__profile-nav-link" href="#">
                           <span class="header__profile-nav-text">
                             Сообщения
                             <i class="header__profile-indicator">2</i>
@@ -99,21 +100,32 @@
                                         </a>
                                     </li>
                                 </ul>
+                <?php else: ?>
+                                <ul class="header__user-nav">
+                                    <li class="header__authorization">
+                                        <a class="header__user-button header__authorization-button button" href="login.html">Вход</a>
+                                    </li>
+                                    <li>
+                                        <a class="header__user-button header__user-button--active header__register-button button">Регистрация</a>
+                                    </li>
+                                </ul>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </li>
-                    <?php if ($add_form): ?>
-                    <li>
-                        <a class="header__post-button header__post-button--active button button--transparent" href="/index.php">Закрыть</a>
-                    </li>
-                    <?php else: ?>
-                    <li>
-                        <a class="header__post-button button button--transparent" href="/add.php">Пост</a>
-                    </li>
+                    <?php if ($is_auth === 1): ?>
+                        <?php if ($add_form): ?>
+                        <li>
+                            <a class="header__post-button header__post-button--active button button--transparent" href="/index.php">Закрыть</a>
+                        </li>
+                        <?php else: ?>
+                        <li>
+                            <a class="header__post-button button button--transparent" href="/add.php">Пост</a>
+                        </li>
+                        <?php endif; ?>
                     <?php endif; ?>
                 </ul>
             </nav>
-        	<?php endif; ?>
         </div>
     </div>
 </header>
