@@ -10,7 +10,7 @@
                         <?php foreach ($sort_types as $sort_type): ?>
                             <li class="sorting__item">
                                 <a class="sorting__link<?php if($sort === $sort_type['id']): ?> sorting__link--active <?php endif; ?>" 
-                                href="/?<?=http_build_query(array_merge($_GET, [ 'order_by' => $sort_type['id'] ])); ?>">
+                                href="/popular.php?<?=http_build_query(array_merge($_GET, [ 'order_by' => $sort_type['id'] ])); ?>">
                                     <span><?=$sort_type['title']; ?></span>
                                     <svg class="sorting__icon" width="10" height="12">
                                         <use xlink:href="#icon-sort"></use>
@@ -26,7 +26,7 @@
                         <li class="popular__filters-item popular__filters-item--all filters__item filters__item--all">
                             <a class="filters__button filters__button--ellipse filters__button--all
                             <?= is_null($id)? 'filters__button--active' : '' ?>" 
-                            href="/?<?=http_build_query(array_merge($_GET, ['id' => null])); ?>">
+                            href="/popular.php?<?=http_build_query(array_merge($_GET, ['id' => null])); ?>">
                                 <span>Все</span>
                             </a>
                         </li>
@@ -34,7 +34,7 @@
                             <li class="popular__filters-item filters__item">
                                 <a class="filters__button filters__button--<?=$types['icon_class']; ?> button
                                 <?php if($id === $types['id']): ?> filters__button--active <?php endif; ?>" 
-                                href="/?<?=http_build_query(array_merge($_GET, [ 'id' => $types['id'] ])); ?>">
+                                href="/popular.php?<?=http_build_query(array_merge($_GET, [ 'id' => $types['id'] ])); ?>">
                                     <span class="visually-hidden"><?=$types['type_name']; ?></span>
                                     <svg class="filters__icon" width="22" height="18">
                                         <use xlink:href="#icon-filter-<?=$types['icon_class']; ?>"></use>

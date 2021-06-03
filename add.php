@@ -1,8 +1,8 @@
 <?php
 require_once('helpers.php');
+require_once('init.php');
 
 $is_auth = 1;
-$user_name = "Дмитрий";
 $add_form = true;
 $user_id = 4;
 
@@ -175,7 +175,8 @@ $page_content = include_template('adding-post.php', [
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'is_auth' => $is_auth,
-    'user_name' => $user_name,
+    'user' => $user,
+    'header_my_nav' => $header_my_nav,
     'title' => 'readme: добавление публикации',
     'add_form' => $add_form
     ]);

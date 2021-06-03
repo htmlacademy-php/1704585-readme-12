@@ -1,84 +1,53 @@
 <?php
 require_once('helpers.php');
 
-$is_auth = 1;
-$user_name = 'Дмитрий'; // укажите здесь ваше имя
-$add_form = false;
+session_start();
 
-$sort_types = [
-    [
-        'id' => '1',
-        'title' => 'Популярность',
-        'order_by' => 'show_count'
-    ],
-    [
-        'id' => '2',
-        'title' => 'Лайки',
-        'order_by' => 'likes'
-    ],
-    [
-        'id' => '3',
-        'title' => 'Дата',
-        'order_by' => 'published_at'
-    ] 
-];
-
-$post_types = [];
-$posts = [];
-$id = 0;
-$sort = 1;
+$errors = [];
 
 $db_link = mysqli_connect("127.0.0.1", "root", "root", "readme");
 if ($db_link == false) {
     print("Ошибка подключения: " . mysqli_connect_error());
 } else {
     mysqli_set_charset($db_link, "utf8");
-    
-    $post_types = make_select_query($db_link, "SELECT * FROM types;");
 
-    if (isset($_GET['id'])) {
-        $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
-    } else {
-        $id = null;
-    }
-    if (isset($_GET['order_by'])) {
-        $sort = filter_input(INPUT_GET, 'order_by', FILTER_SANITIZE_NUMBER_INT);
-    } else {
-        $sort = '1';
-    }
-    
-    $condition = "";
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $post = $_POST;
 
-    if ($id) {
-        $condition = "WHERE tp.id = $id";
+        $required_fields = ['login', 'password'];
+        foreach ($required_fields as $field) {
+            if (empty($post[$field])) {
+                $errors[$field] = 'Поле должно быть заполнено';
+            }
+        }
+
+        if (empty($errors)){
+            $login = mysqli_real_escape_string($db_link, $post['login']);
+            $sql = "SELECT * FROM users WHERE name = '$login'";
+            $user = make_select_query($db_link, $sql, true);
+            
+            if (empty($errors) && $user) {
+                if (password_verify($post['password'], $user['password'])) {
+                    $_SESSION['user'] = $user;
+                } else {
+                    $errors['password'] = 'Пароли не совпадают';
+                }
+            } else {
+                $errors['login'] = 'Неверный логин';
+            }
+        }
+
+        if (empty($errors)) {
+            header("Location: /feed.php");
+            exit();
+        }
     }
-    $posts = make_select_query ($db_link, 
-        "SELECT p.*, name, avatar_img AS avatar, type_name AS type, icon_class AS class, COUNT(c.id) AS comments, COUNT(l.id) AS likes
-        FROM posts p 
-            JOIN users us ON p.user_id = us.id
-            JOIN types tp ON p.post_type = tp.id 
-            LEFT JOIN comments c ON p.id = c.post_id
-            LEFT JOIN likes l ON l.post_id = p.id " .
-        $condition .
-        " GROUP BY p.id ORDER BY " . $sort_types[$sort - 1]['order_by'] . " DESC LIMIT 6;");
 }
 
-date_default_timezone_set("Asia/Yekaterinburg");
-
-$page_content = include_template('main.php', [
-    'posts' => filter_posts($posts),
-    'post_types' => $post_types,
-    'sort_types' => $sort_types,
-    'id' => $id,
-    'sort' => $sort
-    ]);
-$layout_content = include_template('layout.php', [
-    'content' => $page_content,
-    'is_auth' => $is_auth,
-    'user_name' => $user_name,
-    'title' => 'readme: популярное',
-    'add_form' => $add_form
-    ]);
+$layout_content = include_template('layout-main.php', [
+    'title' => 'readme: блог, каким он должен быть',
+    'errors' => $errors
+]);
 
 print($layout_content);
 ?>

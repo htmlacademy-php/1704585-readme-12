@@ -1,8 +1,8 @@
 <?php
 require_once('helpers.php');
+require_once('init.php');
 
 $is_auth = 1;
-$user_name = "Дмитрий";
 $add_form = false;
 
 $id = 0;
@@ -34,7 +34,7 @@ if ($db_link == false) {
         );
         
         $user_id = $post['user_id'];
-        $user = make_select_query($db_link, 
+        $post_user = make_select_query($db_link, 
             "SELECT u.*, COUNT(sub.id) AS subs, COUNT(p.id) AS posts
             FROM users u 
             LEFT JOIN subscriptions sub ON u.id = sub.user_id
@@ -69,14 +69,15 @@ $page_content = include_template('post-main.php', [
     'id' => $id,
     'content' => $post_content,
     'post' => $post,
-    'user' => $user,
+    'user' => $post_user,
     'comments' => $comments,
     'tags' => $tags
     ]);
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'is_auth' => $is_auth,
-    'user_name' => $user_name,
+    'user' => $user,
+    'header_my_nav' => $header_my_nav,
     'title' => 'readme: публикация',
     'add_form' => $add_form
     ]);
