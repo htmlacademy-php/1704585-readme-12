@@ -2,9 +2,8 @@
 require_once('helpers.php');
 require_once('init.php');
 
-$is_auth = 1;
 $add_form = true;
-$user_id = 4;
+$user_id = $user['id'];
 
 $id = '1';
 $post_types = [];

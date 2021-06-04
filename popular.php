@@ -2,7 +2,6 @@
 require_once('helpers.php');
 require_once('init.php');
 
-$is_auth = 1;
 $add_form = false;
 
 $sort_types = [

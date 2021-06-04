@@ -2,7 +2,6 @@
 require_once('helpers.php');
 require_once('init.php');
 
-$is_auth = 1;
 $add_form = false;
 
 $db_link = mysqli_connect("127.0.0.1", "root", "root", "readme");

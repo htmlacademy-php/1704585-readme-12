@@ -3,6 +3,11 @@ require_once('helpers.php');
 
 session_start();
 
+if(isset($_SESSION['user'])) {
+    header("Location: /feed.php");
+    exit();
+}
+
 $errors = [];
 
 $db_link = mysqli_connect("127.0.0.1", "root", "root", "readme");
