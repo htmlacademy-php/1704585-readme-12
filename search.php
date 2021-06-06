@@ -63,6 +63,7 @@ $page_content = include_template('search-' . $page . '.php', [
 ]);
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
+    'search' => $search,
     'title' => 'readme: страница результатов поиска',
     'user' => $user,
     'header_my_nav' => $header_my_nav,
