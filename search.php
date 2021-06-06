@@ -16,7 +16,7 @@ if ($db_link == false) {
         $search = trim($search);
         $is_tag = substr($search, 0, 1);
         
-        if ($is_tag == '#') {
+        if ($is_tag === '#') {
             $tag_name = substr($search, 1, strlen($search) - 1);
             $tag_name = mysqli_real_escape_string($db_link, $tag_name);
 
