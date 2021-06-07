@@ -39,7 +39,7 @@
                             </div>
                             <ul class="post__tags">
                                 <?php foreach($tags as $key => $value): ?>
-                                    <li><a href="#">#<?=$value['tag']; ?></a></li>
+                                    <li><a href="/search.php?query=<?=urlencode('#' . $value['tag']); ?>">#<?=$value['tag']; ?></a></li>
                                 <?php endforeach; ?>
                             </ul>
                             <div class="comments">
