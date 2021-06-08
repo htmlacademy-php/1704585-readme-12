@@ -499,3 +499,19 @@ function validate_tags ($tags) {
     }
     return null;
 }
+
+/**
+ * Функция из многомерного ассоциативного массива создает плоский массив
+ * @param array $array входящий многомерный массив
+ * @return array возвращает плоский массив
+ */
+function make_plain_array ($array) {
+    $new_array = [];
+    $index = 0;
+
+    foreach ($array as $key => $value) {
+        $new_array[$index++] = $value['to_user_id'];
+    }
+
+    return $new_array;
+}

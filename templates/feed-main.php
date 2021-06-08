@@ -10,7 +10,7 @@
                     <?php foreach ($posts as $post): ?>
                         <article class="feed__post post post-<?=$post['class']?>">
                             <header class="post__header post__author">
-                                <a class="post__author-link" href="#" title="Автор">
+                                <a class="post__author-link" href="/profile.php?id=<?=$post['user_id']; ?>" title="Автор">
                                     <div class="post__avatar-wrapper">
                                         <img class="post__author-avatar" src="img/<?=$post['avatar']?>" alt="Аватар пользователя" width="60" height="60">
                                     </div>
@@ -86,7 +86,7 @@
                             </div>
                             <footer class="post__footer post__indicators">
                                 <div class="post__buttons">
-                                    <a class="post__indicator post__indicator--likes button" href="#" title="Лайк">
+                                    <a class="post__indicator post__indicator--likes button" href="/like.php?id=<?=$post['id']; ?>" title="Лайк">
                                         <svg class="post__indicator-icon" width="20" height="17">
                                             <use xlink:href="#icon-heart"></use>
                                         </svg>

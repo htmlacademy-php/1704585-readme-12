@@ -23,7 +23,7 @@
             </p>
         </div>
         <?php if ($is_auth === 1): ?>
-        <form class="header__search-form form" action="/search.php?query=" method="get">
+        <form class="header__search-form form" action="/search.php" method="get">
             <div class="header__search">
                 <label class="visually-hidden">Поиск</label>
                 <input class="header__search-input form__input" name="query" type="search" value="<?=$search; ?>">
@@ -69,7 +69,7 @@
                         <div class="header__profile-tooltip">
                             <ul class="header__profile-nav">
                                 <li class="header__profile-nav-item">
-                                    <a class="header__profile-nav-link" href="#">
+                                    <a class="header__profile-nav-link" href="/profile.php?id=<?=$user['id']; ?>">
                                     <span class="header__profile-nav-text">
                                         Мой профиль
                                     </span>
