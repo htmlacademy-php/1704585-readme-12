@@ -21,15 +21,18 @@ if ($db_link == false) {
     $condition = "";
 
     if ($id) {
-        $condition = "WHERE tp.id = $id";
+        $condition = "AND tp.id = $id";
     }
+    $user_id = $user['id'];
+
     $posts = make_select_query ($db_link, 
         "SELECT p.*, name, avatar_img AS avatar, type_name AS type, icon_class AS class, COUNT(c.id) AS comments, COUNT(l.id) AS likes
         FROM posts p 
             JOIN users us ON p.user_id = us.id
             JOIN types tp ON p.post_type = tp.id 
             LEFT JOIN comments c ON p.id = c.post_id
-            LEFT JOIN likes l ON l.post_id = p.id " .
+            LEFT JOIN likes l ON l.post_id = p.id 
+        WHERE p.user_id IN (SELECT to_user_id FROM subscriptions WHERE user_id = $user_id)" .
         $condition .
         " GROUP BY p.id");
 }

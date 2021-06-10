@@ -45,12 +45,37 @@ if ($db_link == false) {
     } else {
         $sort = '1';
     }
-    
-    $condition = "";
+
+    if(isset($_GET['page'])) {
+        $current_page = filter_input(INPUT_GET, 'page', FILTER_SANITIZE_NUMBER_INT);
+    } else {
+        $current_page = '1';
+    }
 
     if ($id) {
+        $count_condition = "WHERE tp.id = $id";
         $condition = "WHERE tp.id = $id";
+    } else {
+        $count_condition = '';
+        $condition = '';
     }
+    $total_items = make_select_query($db_link, 
+        "SELECT COUNT(p.id) AS total FROM posts p 
+        JOIN types tp ON p.post_type = tp.id " . $count_condition, true)['total'];
+
+    $page_items = 6;
+    $pages_count = ceil($total_items / $page_items);
+
+    if ($current_page) {
+        if($current_page > $pages_count) {
+            $current_page = $pages_count;
+        }
+        $offset = ($current_page - 1) * $page_items;
+    } else {
+        $current_page = '1';
+        $offset = '0';
+    }
+    
     $posts = make_select_query ($db_link, 
         "SELECT p.*, name, avatar_img AS avatar, type_name AS type, icon_class AS class, COUNT(c.id) AS comments, COUNT(l.id) AS likes
         FROM posts p 
@@ -59,13 +84,15 @@ if ($db_link == false) {
             LEFT JOIN comments c ON p.id = c.post_id
             LEFT JOIN likes l ON l.post_id = p.id " .
         $condition .
-        " GROUP BY p.id ORDER BY " . $sort_types[$sort - 1]['order_by'] . " DESC LIMIT 6;");
+        " GROUP BY p.id ORDER BY " . $sort_types[$sort - 1]['order_by'] . " DESC LIMIT " . $page_items . " OFFSET " . $offset);
 }
 
 date_default_timezone_set("Asia/Yekaterinburg");
 
 $page_content = include_template('main.php', [
     'posts' => filter_posts($posts),
+    'pages_count' => $pages_count,
+    'current_page' => $current_page,
     'post_types' => $post_types,
     'sort_types' => $sort_types,
     'id' => $id,
