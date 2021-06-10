@@ -16,7 +16,7 @@
                         </a>
                     <div class="post-mini__action">
                         <span class="post-mini__activity user__additional">Лайкнул вашу публикацию</span>
-                            <time class="post-mini__time user__additional" datetime="2014-03-20T20:20">5 минут назад</time>
+                            <time class="post-mini__time user__additional" datetime="<?=$like['created_at']; ?>"><?=make_datetime_relative($like['created_at']); ?></time>
                     </div>
                 </div>
                 </div>

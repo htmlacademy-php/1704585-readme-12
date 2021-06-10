@@ -23,12 +23,12 @@
                             <span class="post-mini__rating-text user__rating-text">публикаций</span>
                         </p>
                         <p class="post-mini__rating-item user__rating-item user__rating-item--subscribers">
-                            <span class="post-mini__rating-amount user__rating-amount">?</span>
+                            <span class="post-mini__rating-amount user__rating-amount"><?=$subscription['subs']; ?></span>
                             <span class="post-mini__rating-text user__rating-text">подписчиков</span>
                         </p>
                     </div>
                     <div class="post-mini__user-buttons user__buttons">
-                        <?php if (!in_array($subscription['id'], $is_subscribe)): ?>
+                        <?php if (!in_array($subscription['id'], $user_subscriptions)): ?>
                             <button class="post-mini__user-button user__button user__button--subscription button button--main" onClick='location.href="/unsubscribe.php?id=<?=$subscription['id']; ?>"' type="button">Подписаться</button>
                         <?php else: ?>
                             <button class="post-mini__user-button user__button user__button--subscription button button--quartz" onClick='location.href="/unsubscribe.php?id=<?=$subscription['id']; ?>"' type="button">Отписаться</button>

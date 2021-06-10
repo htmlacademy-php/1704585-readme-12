@@ -89,3 +89,6 @@ CREATE TABLE posts_hashtags (
 );
 
 CREATE FULLTEXT INDEX posts_ft_search ON posts(title, content);
+
+ALTER TABLE likes
+    ADD created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;

@@ -29,7 +29,7 @@
                                 <?php endif; ?>
 
                                 <?php if ($post['type'] === 'Текст'): ?>
-                                    <h2><a href="/post.php?id=<?=post['id']; ?>"><?=$post['title']; ?></a></h2>
+                                    <h2><a href="/post.php?id=<?=$post['id']; ?>"><?=$post['title']; ?></a></h2>
                                     <?=cut_string($post['content']); ?>
                                 <?php endif; ?>
 

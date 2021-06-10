@@ -18,10 +18,10 @@ if ($db_link == false) {
         $check_post_id = mysqli_num_rows(mysqli_query($db_link, "SELECT id FROM posts WHERE id = $id"));
 
         $user_id = $user['id'];
-        $check_user_id = mysqli_num_rows(mysqli_query($db_link, "SELECT id FROM likes WHERE user_id = $user_id AND post_id = $id;"));
+        $like_exist = mysqli_num_rows(mysqli_query($db_link, "SELECT id FROM likes WHERE user_id = $user_id AND post_id = $id;"));
         
-        if($check_post_id && !$check_user_id) {
-            $like = ['0' => $user['id'], '1' => $id];
+        if($check_post_id && !$like_exist) {
+            $like = [$user['id'], $id];
             $sql = "INSERT INTO likes (user_id, post_id) VALUES (?, ?);";
 
             $stmt = db_get_prepare_stmt($db_link, $sql, $like);

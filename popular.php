@@ -70,13 +70,9 @@ if ($db_link == false) {
         if($current_page > $pages_count) {
             $current_page = $pages_count;
         }
-    } else {
-        $current_page = '1';
-    }
-
-    if ($current_page > 0) {
         $offset = ($current_page - 1) * $page_items;
     } else {
+        $current_page = '1';
         $offset = '0';
     }
     

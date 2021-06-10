@@ -110,6 +110,7 @@ $page_content = include_template('post-main.php', [
     'post' => $post,
     'user' => $post_user,
     'auth_user' => $user,
+    'subs' => $subs,
     'is_subscribe' => $is_subscribe,
     'comments' => $comments,
     'tags' => $tags,

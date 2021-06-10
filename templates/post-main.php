@@ -108,7 +108,7 @@
                             </div>
                             <div class="post-details__rating user__rating">
                                 <p class="post-details__rating-item user__rating-item user__rating-item--subscribers">
-                                    <span class="post-details__rating-amount user__rating-amount"><?=$user['subs']; ?></span>
+                                    <span class="post-details__rating-amount user__rating-amount"><?=$subs['subs']; ?></span>
                                     <span class="post-details__rating-text user__rating-text">подписчиков</span>
                                 </p>
                                 <p class="post-details__rating-item user__rating-item user__rating-item--publications">
