@@ -39,7 +39,6 @@ if ($db_link == false) {
                 $message->setFrom(['keks@phpdemo.ru' => 'ReadMe']);
 
                 $result = $mailer->send($message);
-                
             }
         }
     }
