@@ -262,3 +262,240 @@ function generate_random_date($index)
 
     return $dt;
 }
+
+/**
+ * Функция обрезает длинну строки и возвращает итоговый HTML абзац
+ * @param string $string входящая строка
+ * @param $length максимальная длинна строки для обрезки, по умолчанию 300 символов
+ * @return string итоговый HTML абзац
+ */
+function cut_string ($string, $length = 300) {
+    $words = explode(" ", $string);
+    $result_string = "<p>";
+    if (mb_strlen($string) > $length){
+        $i = 0;
+        $current_length = -1;
+        $result_array = [];
+        do {
+            $current_length += mb_strlen($words[$i]) + 1;
+            if ($current_length < $length) {
+                array_push($result_array, $words[$i]);
+            }
+            $i++;
+        } while ($current_length < $length);
+        $result_string .= rtrim(implode(" ", $result_array), " .,?!:;") . "...</p>";
+        $result_string .= '<a class="post-text__more-link" href="#">Читать далее</a>';
+    } else {
+        $result_string .= $string . "</p>";
+    }
+    
+    return $result_string;
+}
+
+/**
+ * Фунуция фильтрует пользовательский архив с постами заменяя HTML-теги на HTML-мнемоники
+ * @param array $post массив с пользавательскими постами
+ * @return array массив с отфильтрованными данными
+ */
+function filter_posts ($posts) {
+    $new_posts = [];
+    foreach ($posts as $post) {
+        $new_post = [];
+        foreach ($post as $key => $string) {
+            if (is_string($string)) {
+                $new_post[$key] = htmlspecialchars($string);
+            }
+        }
+        array_push($new_posts , $new_post);
+    }
+    return $new_posts;
+}
+
+/**
+ * Функция добавляет дату к постам пользователей
+ * @param array &$posts ссылки на массив с постами пользователей
+ */
+function add_time_to_post (&$posts) {
+    foreach ($posts as $key => &$post) {
+        $post['datetime'] = generate_random_date($key);
+    }
+}
+
+/**
+ * Функция преобразовывает дату в относительный формат. Заменяет дату на сообщение сколько времени назад произошло событие
+ * @param string $datetime входящая дата
+ * @param string $end_string окончание сообщения о времени, по умолчанию = назад
+ * @return string результирующая строка сообщения
+ */
+function make_datetime_relative ($datetime, $end_string = " назад") {
+    $ts_input = strtotime($datetime);
+    $ts_now = time();
+    $count_minutes = ceil(($ts_now - $ts_input) / 60);
+
+    $string = "";
+    $count = 0;
+
+    switch ($count_minutes) {
+        case $count_minutes < 60: 
+            $count = $count_minutes;
+            $string = $count . get_noun_plural_form($count, " минута", " минуты", " минут");
+            break;
+        case $count_minutes < 60 * 24:
+            $count = ceil($count_minutes / 60);
+            $string = $count . get_noun_plural_form($count, " час", " часа", " часов");
+            break;
+        case $count_minutes < 60 * 24 * 7:
+            $count = ceil($count_minutes / 60 / 24);
+            $string = $count . get_noun_plural_form($count, " день", " дня", " дней");
+            break;
+        case $count_minutes < 60 * 24 * 7 * 5:
+            $count = ceil($count_minutes / 60 / 24 / 7);
+            $string = $count . get_noun_plural_form($count, " неделя", " недели", " недель");
+            break;
+        case $count_minutes < 60 * 24 * 365:
+            $count = ceil($count_minutes / 60 / 24 / 31);
+            $string = $count . get_noun_plural_form($count, " месяц", " месяца", " месяцев");
+            break;
+        default:
+            $count = ceil($count_minutes / 60 / 24 / 365);
+            $string = $count . get_noun_plural_form($count, " год", " года", " лет");
+    }
+
+    $string .= $end_string;
+    return $string;
+}
+
+/**
+ * Функция выполняет запрос SELECT и возвращает из базы готовый массив с запрошенными данными
+ * @param mysqli $db_link подключение к базе данных
+ * @param string $sql строка запроса на выборку данных
+ * @param boolean $one параметр определяет возвращаемый результат двумерный массив или просто массив с данными, по умолчанию false
+ * @return array готовый массив с данными
+ */
+function make_select_query ($db_link, $sql, $one = false) {
+    $result = mysqli_query($db_link, $sql);
+    if ($result) {
+        if($one) {
+            return mysqli_fetch_assoc($result);
+        }
+        return mysqli_fetch_all($result, MYSQLI_ASSOC);
+    }
+    print("Ошибка запроса: " . mysqli_error($db_link));
+}
+
+/**
+ * Функция возвращает значение поля формы после отправки
+ * @param string $name имя поля формы
+ * @return string значение поля формы
+ */
+function getPostVal ($name) {
+    return filter_input(INPUT_POST, $name);
+}
+
+/**
+ * Функция проверяет заполнено ли поле формы
+ * @param string $value содержимое поля формы
+ * @param string $title название поля формы
+ * @return string сообщение об ошибке или null если поле заполнено
+ */
+function validateFilled ($value, $title) {
+    if (empty($value)) {
+        return $title . ". Это поле должно быть заполнено.";
+    }
+    return null;
+}
+
+/**
+ * Функция проверяет длину текстового поля на превышение максимального значения
+ * @param string $value содержимое поля формы
+ * @param int $max максимально допустимое значение длины поля
+ * @param string $title название поля формы
+ * @return string сообщение об ошибке или null если ошибок нет
+ */
+function validateFilledLength ($value, $max, $title) {
+    $notEmpty = validateFilled($value, $title);
+    if (!$notEmpty) {
+        $length = mb_strlen($value);
+        if ($length > $max) {
+            return "Текст не должен превышать " . $max . " знаков.";
+        }
+        return null;
+    } 
+    return $notEmpty;
+}
+
+/**
+ * Функция проверяет правильность ссылки
+ * @param string $value содержимое поля формы
+ * @param string $title название поля формы
+ * @param boolean $video указатель на ссылку с Youtube, по умолчанию false
+ * @return string сообщение об ошибке или null если ошибок нет
+ */
+function validateUrl ($value, $title, $video = false) {
+    $notEmpty = validateFilled($value, $title);
+    if (!$notEmpty) {
+        if (!filter_var($value, FILTER_VALIDATE_URL)) {
+            return "Введен некорректный URL.";
+        } elseif (!$video && !check_youtube_url($value)) {
+            return "Видео не существует!";
+        }
+        return null;
+    }
+    return $notEmpty;
+}
+
+/**
+ * Функция возвращает тип файла
+ * @param string $file файл у которого проверяется тип
+ * @return string тип файла
+ */
+function getFileType ($file) {
+    return image_type_to_mime_type(exif_imagetype($file));
+}
+
+/**
+ * Функция проверки соответствия типов файла
+ * @param string $file_type тип файла
+ * @param array $available_types массив с допустимыми типами файлов
+ * @return string возвращает ошибку если тип файла не соответствует допустимым типам, иначе возвращает null
+ */
+function validateFileType ($file_type, $available_types) {
+    if(in_array($file_type, $available_types)) {
+        return null;
+    }
+    return "Неверный формат файла. Файл может быть PNG, JPEG или GIF.";
+}
+
+/**
+ * Функция заполнения полей поста для запроса
+ * @param array $post входящий массив с данными поста
+ * @param array $fields список полей базы данных постов
+ * @return array заполненный массив поста
+ */
+function fillArray ($post, $fields) {
+    $result = [];
+
+    foreach ($fields as $key => $field) {
+        if(isset($post[$field])) {
+            $result[$field] = $post[$field];
+        } else {
+            $result[$field] = null;
+        }
+    }
+
+    return $result;
+}
+
+/**
+ * Функция проверяет теги на соответствие формату допустимых символов
+ * @param array $tags входящий массив с тегами
+ * @return string возвращает ошибку или null если все в порядке
+ */
+function validate_tags ($tags) {
+    foreach($tags as $key => $value) {
+        if (!preg_match('/^[a-zа-яё0-9_-]+$/ui', $value)) {
+            return "Неверный формат тегов";
+        }
+    }
+    return null;
+}
