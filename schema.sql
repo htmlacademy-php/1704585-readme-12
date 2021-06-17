@@ -87,3 +87,8 @@ CREATE TABLE posts_hashtags (
     FOREIGN KEY (post_id) REFERENCES posts (id) ON DELETE CASCADE,
     FOREIGN KEY (hash_id) REFERENCES hashtags (id) ON DELETE CASCADE
 );
+
+CREATE FULLTEXT INDEX posts_ft_search ON posts(title, content);
+
+ALTER TABLE likes
+    ADD created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;

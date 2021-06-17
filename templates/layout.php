@@ -23,10 +23,10 @@
             </p>
         </div>
         <?php if ($is_auth === 1): ?>
-        <form class="header__search-form form" action="#" method="get">
+        <form class="header__search-form form" action="/search.php" method="get">
             <div class="header__search">
                 <label class="visually-hidden">Поиск</label>
-                <input class="header__search-input form__input" type="search">
+                <input class="header__search-input form__input" name="query" type="search" value="<?=$search; ?>">
                 <button class="header__search-button button" type="submit">
                     <svg class="header__search-icon" width="18" height="18">
                         <use xlink:href="#icon-search"></use>
@@ -69,39 +69,39 @@
                         <div class="header__profile-tooltip">
                             <ul class="header__profile-nav">
                                 <li class="header__profile-nav-item">
-                                    <a class="header__profile-nav-link" href="#">
+                                    <a class="header__profile-nav-link" href="/profile.php?id=<?=$user['id']; ?>">
                                     <span class="header__profile-nav-text">
                                         Мой профиль
                                     </span>
                                     </a>
                                 </li>
                                 <li class="header__profile-nav-item">
-                                    <a class="header__profile-nav-link" href="#">
-                          <span class="header__profile-nav-text">
-                            Сообщения
-                            <i class="header__profile-indicator">2</i>
-                          </span>
-                                        </a>
-                                    </li>
+                                    <a class="header__profile-nav-link" href="/messages.php">
+                                    <span class="header__profile-nav-text">
+                                        Сообщения
+                                        <!--<i class="header__profile-indicator">2</i>-->
+                                    </span>
+                                    </a>
+                                </li>
 
-                                    <li class="header__profile-nav-item">
-                                        <a class="header__profile-nav-link" href="logout.php">
-                          <span class="header__profile-nav-text">
-                            Выход
-                          </span>
-                                        </a>
-                                    </li>
-                                </ul>
+                                <li class="header__profile-nav-item">
+                                    <a class="header__profile-nav-link" href="logout.php">
+                                    <span class="header__profile-nav-text">
+                                        Выход
+                                    </span>
+                                    </a>
+                                </li>
+                            </ul>
                 <?php else: ?>
-                                <ul class="header__user-nav">
-                                    <li class="header__authorization">
-                                        <a class="header__user-button header__authorization-button button" href="login.html">Вход</a>
-                                    </li>
-                                    <li>
-                                        <a class="header__user-button header__user-button--active header__register-button button">Регистрация</a>
-                                    </li>
-                                </ul>
-                                <?php endif; ?>
+                            <ul class="header__user-nav">
+                                <li class="header__authorization">
+                                    <a class="header__user-button header__authorization-button button" href="login.html">Вход</a>
+                                </li>
+                                <li>
+                                    <a class="header__user-button header__user-button--active header__register-button button">Регистрация</a>
+                                </li>
+                            </ul>
+                <?php endif; ?>
                             </div>
                         </div>
                     </li>

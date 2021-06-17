@@ -266,12 +266,17 @@ function generate_random_date($index)
 /**
  * Функция обрезает длинну строки и возвращает итоговый HTML абзац
  * @param string $string входящая строка
- * @param $length максимальная длинна строки для обрезки, по умолчанию 300 символов
+ * @param int $length максимальная длинна строки для обрезки, по умолчанию 300 символов
+ * @param boolean $is_simple проверяет необходимость добавления абзаца и кнопки продолжения, по умолчанию false
  * @return string итоговый HTML абзац
  */
-function cut_string ($string, $length = 300) {
+function cut_string ($string, $length = 300, $is_simple = false) {
     $words = explode(" ", $string);
-    $result_string = "<p>";
+    if ($is_simple) {
+        $result_string = '';
+    } else {
+        $result_string = "<p>";
+    }
     if (mb_strlen($string) > $length){
         $i = 0;
         $current_length = -1;
@@ -283,10 +288,15 @@ function cut_string ($string, $length = 300) {
             }
             $i++;
         } while ($current_length < $length);
-        $result_string .= rtrim(implode(" ", $result_array), " .,?!:;") . "...</p>";
-        $result_string .= '<a class="post-text__more-link" href="#">Читать далее</a>';
+        $result_string .= rtrim(implode(" ", $result_array), " .,?!:;") . '...';
+        if (!$is_simple) {
+            $result_string .= "</p>" . '<a class="post-text__more-link" href="#">Читать далее</a>';
+        }
     } else {
-        $result_string .= $string . "</p>";
+        $result_string .= $string;
+        if (!$is_simple) {
+            $result_string .= "</p>";
+        } 
     }
     
     return $result_string;

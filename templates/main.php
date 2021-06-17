@@ -111,7 +111,7 @@
                     </div>
                     <footer class="post__footer">
                         <div class="post__author">
-                            <a class="post__author-link" href="#" title="Автор">
+                            <a class="post__author-link" href="/profile.php?id=<?=$post['user_id']; ?>" title="Автор">
                                 <div class="post__avatar-wrapper">
                                     <!--укажите путь к файлу аватара-->
                                     <img class="post__author-avatar" src="img/<?=$post['avatar']; ?>" alt="Аватар пользователя">
@@ -126,7 +126,7 @@
                         </div>
                         <div class="post__indicators">
                             <div class="post__buttons">
-                                <a class="post__indicator post__indicator--likes button" href="#" title="Лайк">
+                                <a class="post__indicator post__indicator--likes button" href="/like.php?id=<?=$post['id']; ?>" title="Лайк">
                                     <svg class="post__indicator-icon" width="20" height="17">
                                         <use xlink:href="#icon-heart"></use>
                                     </svg>
@@ -149,5 +149,11 @@
                 </article>
             <?php endforeach; ?>
         </div>
+            <?php if ($pages_count > 1): ?>
+                <div class="popular__page-links">
+                    <a class="popular__page-link popular__page-link--prev button button--gray" href="/popular.php?<?=http_build_query(array_merge($_GET, ['page' => $current_page - 1])); ?>">Предыдущая страница</a>
+                    <a class="popular__page-link popular__page-link--next button button--gray" href="/popular.php?<?=http_build_query(array_merge($_GET, ['page' => $current_page + 1])); ?>">Следующая страница</a>
+                </div>
+            <?php endif; ?>
     </div>
 </section>
