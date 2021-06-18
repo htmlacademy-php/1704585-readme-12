@@ -5,7 +5,6 @@ require_once('mail.php');
 
 $add_form = false;
 
-$db_link = mysqli_connect("127.0.0.1", "root", "root", "readme");
 if ($db_link == false) {
     print("Ошибка подключения: " . mysqli_connect_error());
 } else {
@@ -14,15 +13,15 @@ if ($db_link == false) {
     $user_id = $user['id'];
 
     $user_list = make_select_query($db_link, 
-        "SELECT id, name, avatar_img, content, published_at FROM users us JOIN 
+        "SELECT id, name, avatar_img, content, published_at FROM users u JOIN 
             (SELECT user_id, content, published_at
-            FROM messages mes INNER JOIN 
-                (SELECT MAX(published_at) AS max_date, IF (from_user_id = $user_id, to_user_id, from_user_id) AS user_id
-                FROM messages
-                WHERE from_user_id = $user_id OR to_user_id = $user_id
-                GROUP BY user_id
-                ) AS us ON mes.published_at = us.max_date
-            ) AS last_mes ON last_mes.user_id = us.id 
+	        FROM messages mes JOIN 
+   	            (SELECT IF(from_user_id = $user_id, to_user_id, from_user_id) AS user_id, MAX(published_at) AS max_date
+     	        FROM messages
+		        WHERE from_user_id = $user_id OR to_user_id = $user_id
+		        GROUP BY user_id
+		        ) last_mes ON mes.published_at = last_mes.max_date AND (mes.from_user_id = last_mes.user_id OR mes.to_user_id = last_mes.user_id)
+	        ) AS m ON m.user_id = id 
         WHERE id IN (SELECT from_user_id FROM messages WHERE to_user_id = $user_id)
             OR id IN (SELECT to_user_id FROM messages WHERE from_user_id = $user_id);");
     

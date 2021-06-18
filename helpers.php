@@ -272,11 +272,9 @@ function generate_random_date($index)
  */
 function cut_string ($string, $length = 300, $is_simple = false) {
     $words = explode(" ", $string);
-    if ($is_simple) {
-        $result_string = '';
-    } else {
-        $result_string = "<p>";
-    }
+    $tail = '<a class="post-text__more-link" href="#">Читать далее</a>';
+    $result_string = $string;
+    
     if (mb_strlen($string) > $length){
         $i = 0;
         $current_length = -1;
@@ -289,17 +287,18 @@ function cut_string ($string, $length = 300, $is_simple = false) {
             $i++;
         } while ($current_length < $length);
         $result_string .= rtrim(implode(" ", $result_array), " .,?!:;") . '...';
-        if (!$is_simple) {
-            $result_string .= "</p>" . '<a class="post-text__more-link" href="#">Читать далее</a>';
-        }
-    } else {
-        $result_string .= $string;
-        if (!$is_simple) {
-            $result_string .= "</p>";
-        } 
+        $is_cut = true;
     }
     
-    return $result_string;
+    if ($is_simple) {
+        return $result_string;
+    }
+
+    if ($is_cut) {
+        return "<p>$result_string</p> $tail";
+    }
+
+    return "<p>$result_string</p>";
 }
 
 /**

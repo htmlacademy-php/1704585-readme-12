@@ -1,5 +1,10 @@
 <?php
 require_once('helpers.php');
+if (file_exists('local_config.php')) {
+    require_once('local_config.php');
+} else {
+    echo("Файл не существует");
+}
 
 session_start();
 
@@ -10,7 +15,7 @@ if(isset($_SESSION['user'])) {
 
 $errors = [];
 
-$db_link = mysqli_connect("127.0.0.1", "root", "root", "readme");
+$db_link = mysqli_connect($localhost, $db_user, $db_password, $db_session);
 if ($db_link == false) {
     print("Ошибка подключения: " . mysqli_connect_error());
 } else {

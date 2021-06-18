@@ -9,7 +9,6 @@ $post = [];
 
 $id = filter_input(INPUT_GET, 'id');
 
-$db_link = mysqli_connect("127.0.0.1", "root", "root", "readme");
 if ($db_link == false) {
     print("Ошибка подключения: " . mysqli_connect_error());
 } else {

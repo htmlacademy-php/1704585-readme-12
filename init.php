@@ -1,5 +1,10 @@
 <?php
 session_start();
+if (file_exists('local_config.php')) {
+    require_once('local_config.php');
+} else {
+    echo("Файл не существует");
+}
 
 $is_auth = 0;
 
@@ -26,4 +31,6 @@ $header_my_nav = [
         'title' => 'Личные сообщения'
     ]
 ];
+
+$db_link = mysqli_connect($localhost, $db_user, $db_password, $db_session);
 ?>

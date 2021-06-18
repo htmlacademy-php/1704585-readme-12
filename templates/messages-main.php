@@ -20,7 +20,7 @@
                                         <?=cut_string($user['content'], 18, true); ?>
                                     </p>
                                     <time class="messages__preview-time" datetime="<?=$user['pulished_at']; ?>">
-                                        00:15
+                                        <?=date('H:i', strtotime($user['published_at'])); ?>
                                     </time>
                                 </div>
                             </div>
