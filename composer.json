@@ -1,0 +1,15 @@
+{
+    "name": "happy/readme",
+    "description": "Website for make blog",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Дмитрий",
+            "email": "HappyChel@mail.ru"
+        }
+    ],
+    "require": {
+        "swiftmailer/swiftmailer": "^6.2"
+    }
+}

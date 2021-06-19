@@ -27,7 +27,6 @@ $posts = [];
 $id = 0;
 $sort = 1;
 
-$db_link = mysqli_connect("127.0.0.1", "root", "root", "readme");
 if ($db_link == false) {
     print("Ошибка подключения: " . mysqli_connect_error());
 } else {
@@ -77,7 +76,7 @@ if ($db_link == false) {
     }
     
     $posts = make_select_query ($db_link, 
-        "SELECT p.*, name, avatar_img AS avatar, type_name AS type, icon_class AS class, COUNT(c.id) AS comments, COUNT(l.id) AS likes
+        "SELECT p.*, name, avatar_img AS avatar, type_name AS type, icon_class AS class, COUNT(DISTINCT c.id) AS comments, COUNT(l.id) AS likes
         FROM posts p 
             JOIN users us ON p.user_id = us.id
             JOIN types tp ON p.post_type = tp.id 

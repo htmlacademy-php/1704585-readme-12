@@ -63,13 +63,13 @@
                                         <?php foreach($comments as $comment): ?>
                                             <li class="comments__item user">
                                                 <div class="comments__avatar">
-                                                    <a class="user__avatar-link" href="#">
+                                                    <a class="user__avatar-link" href="/profile.php?id=<?=$comment['id']; ?>">
                                                         <img class="comments__picture" src="img/<?=$comment['avatar_img']; ?>" alt="Аватар пользователя">
                                                     </a>
                                                 </div>
                                                 <div class="comments__info">
                                                     <div class="comments__name-wrapper">
-                                                        <a class="comments__user-name" href="#">
+                                                        <a class="comments__user-name" href="/profile.php?id=<?=$comment['id']; ?>">
                                                             <span><?=$comment['name']; ?></span>
                                                         </a>
                                                         <time class="comments__time" datetime="<?=$comment['published_at']; ?>">
@@ -108,7 +108,7 @@
                             </div>
                             <div class="post-details__rating user__rating">
                                 <p class="post-details__rating-item user__rating-item user__rating-item--subscribers">
-                                    <span class="post-details__rating-amount user__rating-amount"><?=$subs['subs']; ?></span>
+                                    <span class="post-details__rating-amount user__rating-amount"><?=$user['subs']; ?></span>
                                     <span class="post-details__rating-text user__rating-text">подписчиков</span>
                                 </p>
                                 <p class="post-details__rating-item user__rating-item user__rating-item--publications">
@@ -118,11 +118,11 @@
                             </div>
                             <div class="post-details__user-buttons user__buttons">
                                 <?php if (!$is_subscribe): ?>
-                                    <button class="user__button user__button--subscription button button--main" onClick='location.href="/unsubscribe.php?id=<?=$user['id']; ?>"' type="button">Подписаться</button>
+                                    <button class="user__button user__button--subscription button button--main" onClick='location.href="/subscribe.php?id=<?=$user['id']; ?>"' type="button">Подписаться</button>
                                 <?php else: ?>
                                     <button class="user__button user__button--subscription button button--quartz" onClick='location.href="/unsubscribe.php?id=<?=$user['id']; ?>"' type="button">Отписаться</button>
                                 <?php endif; ?>
-                                <a class="user__button user__button--writing button button--green" href="#">Сообщение</a>
+                                <a class="user__button user__button--writing button button--green" href="/messages.php?id=<?=$post['user_id']; ?>">Сообщение</a>
                             </div>
                         </div>
                 </div>

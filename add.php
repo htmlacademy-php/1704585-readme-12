@@ -1,6 +1,7 @@
 <?php
 require_once('helpers.php');
 require_once('init.php');
+require_once('mail.php');
 
 $add_form = true;
 $user_id = $user['id'];
@@ -10,7 +11,6 @@ $post_types = [];
 $errors = [];
 $post = [];
 
-$db_link = mysqli_connect("127.0.0.1", "root", "root", "readme");
 if ($db_link == false) {
     print("Ошибка подключения: " . mysqli_connect_error());
 } else {
@@ -150,6 +150,22 @@ if ($db_link == false) {
                     if (!$result) {
                         print("Ошибка запроса: " . mysqli_error($db_link));
                     }
+                }
+
+                $subscribed_users = make_select_query($db_link, 
+                    "SELECT name, email FROM users WHERE id IN (SELECT user_id FROM subscriptions WHERE to_user_id = $user_id);");
+                               
+                foreach ($subscribed_users as $subscribed_user) {
+                    $message_content = "Здравствуйте, " . $subscribed_user['name'] . ". Пользователь " . $user['name'] . " только что опубликовал новую запись \"" . $post['title'] . "\" . Посмотрите её на странице пользователя: ";
+                    $message_subject = "Новая публикация от пользователя " . $user['name'];
+
+                    $message = new Swift_Message();
+                    $message->setSubject($message_subject);
+                    $message->setTo([$subscribed_user['email'] => $subscribed_user['name']]);
+                    $message->setBody($message_content . '<a href="http://localhost/profile.php?id=' . $user['id'] . '">' . $user['name'] .'</a>', 'text/html');
+                    $message->setFrom(['keks@phpdemo.ru' => 'ReadMe']);
+
+                    $send_result = $mailer->send($message);
                 }
                 
                 header("Location: post.php?id=" . $post_id);

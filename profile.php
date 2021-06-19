@@ -1,6 +1,7 @@
 <?php
 require_once('helpers.php');
 require_once('init.php');
+require_once('mail.php');
 
 $add_form = false;
 
@@ -25,7 +26,6 @@ if (isset($_GET['tab'])) {
     $tab = 'posts';
 }
 
-$db_link = mysqli_connect("127.0.0.1", "root", "root", "readme");
 if ($db_link == false) {
     print("Ошибка подключения: " . mysqli_connect_error());
 } else {
@@ -40,7 +40,7 @@ if ($db_link == false) {
     if ($id) {
         if (mysqli_num_rows(mysqli_query($db_link, "SELECT id FROM users WHERE id = $id;"))) {
             $user_profile = make_select_query($db_link, 
-            "SELECT u.id, u.name, u.avatar_img, u.created_at, COUNT(p.id) AS posts_count, COUNT(DISTINCT s.id) AS subs 
+            "SELECT u.id, u.name, u.avatar_img, u.created_at, COUNT(DISTINCT p.id) AS posts_count, COUNT(DISTINCT s.id) AS subs 
                 FROM users u JOIN posts p ON u.id = p.user_id
                 LEFT JOIN subscriptions s ON u.id = s.to_user_id
                 WHERE u.id = $id
@@ -70,7 +70,7 @@ if ($db_link == false) {
                     break;
                 case 'subscriptions':
                     $content = make_select_query($db_link, 
-                    "SELECT u.id, u.name, u.avatar_img, u.created_at, COUNT(p.id) AS posts_count, COUNT(DISTINCT s.id) AS subs 
+                    "SELECT u.id, u.name, u.avatar_img, u.created_at, COUNT(DISTINCT p.id) AS posts_count, COUNT(DISTINCT s.id) AS subs 
                         FROM users u JOIN posts p ON u.id = p.user_id
                         LEFT JOIN subscriptions s ON u.id = s.to_user_id
                         WHERE u.id IN (SELECT user_id FROM subscriptions WHERE to_user_id = $id)
@@ -100,7 +100,8 @@ if ($db_link == false) {
 
 $tab_content = include_template('profile-' . $tab . '.php', [
     'content' => $content, 
-    'user_subscriptions' => $user_subscriptions
+    'user_subscriptions' => $user_subscriptions,
+    'user' => $user
 ]);
 
 $page_content = include_template('profile-main.php', [

@@ -29,7 +29,7 @@
                 <?php else: ?>
                     <button class="profile__user-button user__button user__button--subscription button button--quartz" onClick='location.href="/unsubscribe.php?id=<?=$user_profile['id']; ?>"' type="button">Отписаться</button>
                 <?php endif; ?>
-                <a class="profile__user-button user__button user__button--writing button button--green" href="#">Сообщение</a>
+                <a class="profile__user-button user__button user__button--writing button button--green" href="/messages.php?id=<?=$user_profile['id']; ?>">Сообщение</a>
             </div>
             <?php endif; ?>
         </div>

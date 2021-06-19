@@ -9,7 +9,6 @@ $post = [];
 
 $id = filter_input(INPUT_GET, 'id');
 
-$db_link = mysqli_connect("127.0.0.1", "root", "root", "readme");
 if ($db_link == false) {
     print("Ошибка подключения: " . mysqli_connect_error());
 } else {
@@ -29,7 +28,7 @@ if ($db_link == false) {
         }
 
         $post = make_select_query($db_link, 
-            "SELECT p.*, type_name AS type, icon_class AS class, COUNT(c.id) AS comments, COUNT(l.id) AS likes 
+            "SELECT p.*, type_name AS type, icon_class AS class, COUNT(DISTINCT c.id) AS comments, COUNT(l.id) AS likes 
             FROM posts p
             JOIN types tp ON p.post_type = tp.id
             LEFT JOIN comments c ON p.id = c.post_id
@@ -41,7 +40,7 @@ if ($db_link == false) {
         
         $post_user_id = $post['user_id'];
         $post_user = make_select_query($db_link, 
-            "SELECT u.*, COUNT(sub.id) AS subs, COUNT(p.id) AS posts
+            "SELECT u.*, COUNT(DISTINCT sub.id) AS subs, COUNT(p.id) AS posts
             FROM users u 
             LEFT JOIN subscriptions sub ON u.id = sub.user_id
             LEFT JOIN posts p ON u.id = p.user_id
@@ -50,17 +49,11 @@ if ($db_link == false) {
             true
         );
 
-        $subs = make_select_query($db_link,
-        "SELECT COUNT(s.id) AS subs 
-            FROM users u JOIN subscriptions s ON u.id = s.to_user_id
-            WHERE u.id = $post_user_id
-        GROUP BY u.id", true);
-
         $user_id = $user['id'];
         $is_subscribe = mysqli_num_rows(mysqli_query($db_link, "SELECT id FROM subscriptions WHERE user_id = $user_id AND to_user_id = $post_user_id"));
 
         $comments = make_select_query($db_link, 
-        "SELECT comment, published_at, name, avatar_img 
+        "SELECT u.id, comment, published_at, name, avatar_img 
         FROM comments c
         JOIN users u ON c.user_id = u.id
         WHERE c.post_id = $id
@@ -80,7 +73,7 @@ if ($db_link == false) {
         } else {
             $errors = [];
 
-            $comment = trim(filter_input(INPUT_POST, 'text', FILTER_DEFAULT));
+            $comment = trim(filter_input(INPUT_POST, 'text', FILTER_SANITIZE_STRING));
 
             if (mb_strlen($comment) < 4) {
                 $errors['text'] = 'Слишком короткий текст';
@@ -110,7 +103,6 @@ $page_content = include_template('post-main.php', [
     'post' => $post,
     'user' => $post_user,
     'auth_user' => $user,
-    'subs' => $subs,
     'is_subscribe' => $is_subscribe,
     'comments' => $comments,
     'tags' => $tags,
