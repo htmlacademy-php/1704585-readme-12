@@ -86,14 +86,15 @@
                             <span><?=$post['comments']; ?></span>
                             <span class="visually-hidden">количество комментариев</span>
                         </a>
-                        <a class="post__indicator post__indicator--repost button" href="#" title="Репост">
+                        <a class="post__indicator post__indicator--repost button" href="/repost.php?id=<?=$post['id']; ?>" title="Репост">
                             <svg class="post__indicator-icon" width="19" height="17">
                                 <use xlink:href="#icon-repost"></use>
                             </svg>
-                            <span>5</span>
+                            <span><?=$post['repost_count']; ?></span>
                             <span class="visually-hidden">количество репостов</span>
                         </a>
                     </div>
+                    <time class="post__time" datetime="<?=$post['published_at']; ?>"><?=make_datetime_relative($post['published_at']); ?></time>
                 </footer>
             </article>
         <?php endforeach; ?>

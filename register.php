@@ -95,7 +95,8 @@ $page_content = include_template('reg-main.php', [
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'is_auth' => $is_auth,
-    'title' => 'readme: регистрация'
+    'title' => 'readme: регистрация',
+    'is_login' => false
     ]);
 
 print($layout_content);

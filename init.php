@@ -1,10 +1,6 @@
 <?php
 session_start();
-if (file_exists('local_config.php')) {
-    require_once('local_config.php');
-} else {
-    echo("Файл не существует");
-}
+require_once('default-config.php');
 
 $is_auth = 0;
 

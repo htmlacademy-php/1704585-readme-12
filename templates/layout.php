@@ -95,10 +95,10 @@
                 <?php else: ?>
                             <ul class="header__user-nav">
                                 <li class="header__authorization">
-                                    <a class="header__user-button header__authorization-button button" href="login.html">Вход</a>
+                                    <a class="header__user-button header__authorization-button button<?php if ($is_login): ?> header__user-button--active" <?php else: ?>" href="/login.php" <?php endif; ?>>Вход</a>
                                 </li>
                                 <li>
-                                    <a class="header__user-button header__user-button--active header__register-button button">Регистрация</a>
+                                    <a class="header__user-button header__register-button button<?php if (!$is_login): ?> header__user-button--active" <?php else: ?>" href="/register.php" <?php endif; ?>>Регистрация</a>
                                 </li>
                             </ul>
                 <?php endif; ?>
