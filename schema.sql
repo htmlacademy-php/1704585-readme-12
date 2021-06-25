@@ -92,3 +92,8 @@ CREATE FULLTEXT INDEX posts_ft_search ON posts(title, content);
 
 ALTER TABLE likes
     ADD created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+
+ALTER TABLE posts
+    ADD is_repost BOOLEAN DEFAULT 0,
+    ADD author_id INT,
+    ADD repost_count INT;

@@ -56,8 +56,11 @@ if ($db_link == false) {
     }
 }
 
+$post_content = include_template('posts-page.php', [
+    'posts' => $posts
+]);
 $page_content = include_template('search-' . $page . '.php', [
-    'posts' => $posts,
+    'content' => $post_content,
     'search' => $search
 ]);
 $layout_content = include_template('layout.php', [

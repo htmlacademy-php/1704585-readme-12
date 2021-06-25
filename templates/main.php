@@ -52,8 +52,7 @@
                         <h2><a href="/post.php?id=<?=$post['id']; ?>"><?=$post['title']; ?></a></h2>
                     </header>
                     <div class="post__main">
-                        <!--здесь содержимое карточки-->
-                        <!--содержимое для поста-цитаты-->
+
                         <?php if ($post['type'] === "Цитата"): ?>
                         <blockquote>
                             <p>
@@ -64,7 +63,6 @@
                         </blockquote>
                         <?php endif; ?>
 
-                        <!--содержимое для поста-ссылки-->
                         <?php if ($post['type'] === "Ссылка"): ?>
                         <div class="post-link__wrapper">
                             <a class="post-link__external" href="http://<?=$post['link']; ?>" title="Перейти по ссылке">
@@ -81,14 +79,12 @@
                         </div>
                         <?php endif; ?>
 
-                        <!--содержимое для поста-фото-->
                         <?php if ($post['type'] === "Картинка"): ?>
                         <div class="post-photo__image-wrapper">
                             <img src="uploads/<?=$post['img']; ?>" alt="Фото от пользователя" width="360" height="240">
                         </div>
                         <?php endif; ?>
 
-                        <!--содержимое для поста-видео-->
                         <?php if ($post['type'] === "Видео"): ?>
                         <div class="post-video__block">
                             <div class="post-video__preview">
@@ -104,7 +100,6 @@
                         </div>
                         <?php endif; ?>
 
-                        <!--содержимое для поста-текста-->
                         <?php if ($post['type'] === "Текст"): ?>
                         <?=cut_string($post['content']); ?><!--здесь текст-->
                         <?php endif; ?>

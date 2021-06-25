@@ -273,7 +273,7 @@ function generate_random_date($index)
 function cut_string ($string, $length = 300, $is_simple = false) {
     $words = explode(" ", $string);
     $tail = '<a class="post-text__more-link" href="#">Читать далее</a>';
-    $result_string = $string;
+    $result_string = '';
     
     if (mb_strlen($string) > $length){
         $i = 0;
@@ -288,6 +288,8 @@ function cut_string ($string, $length = 300, $is_simple = false) {
         } while ($current_length < $length);
         $result_string .= rtrim(implode(" ", $result_array), " .,?!:;") . '...';
         $is_cut = true;
+    } else {
+        $result_string = $string;
     }
     
     if ($is_simple) {
@@ -308,14 +310,16 @@ function cut_string ($string, $length = 300, $is_simple = false) {
  */
 function filter_posts ($posts) {
     $new_posts = [];
-    foreach ($posts as $post) {
-        $new_post = [];
-        foreach ($post as $key => $string) {
-            if (is_string($string)) {
-                $new_post[$key] = htmlspecialchars($string);
+    if ($posts) {
+        foreach ($posts as $post) {
+            $new_post = [];
+            foreach ($post as $key => $string) {
+                if (is_string($string)) {
+                    $new_post[$key] = htmlspecialchars($string);
+                }
             }
+            array_push($new_posts , $new_post);
         }
-        array_push($new_posts , $new_post);
     }
     return $new_posts;
 }

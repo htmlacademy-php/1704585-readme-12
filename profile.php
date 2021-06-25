@@ -82,7 +82,7 @@ if ($db_link == false) {
                     break;
                 default:
                     $content = make_select_query($db_link, 
-                    "SELECT p.*, name, avatar_img AS avatar, type_name AS type, icon_class AS class, COUNT(c.id) AS comments, COUNT(l.id) AS likes
+                    "SELECT p.*, name, avatar_img AS avatar, type_name AS type, icon_class AS class, COUNT(DISTINCT c.id) AS comments, COUNT(DISTINCT l.id) AS likes
                     FROM posts p 
                         JOIN users us ON p.user_id = us.id
                         JOIN types tp ON p.post_type = tp.id 
@@ -103,7 +103,6 @@ $tab_content = include_template('profile-' . $tab . '.php', [
     'user_subscriptions' => $user_subscriptions,
     'user' => $user
 ]);
-
 $page_content = include_template('profile-main.php', [
     'content' => $tab_content,
     'user_profile' => $user_profile,

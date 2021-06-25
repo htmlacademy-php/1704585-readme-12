@@ -36,10 +36,13 @@ if ($db_link == false) {
         " GROUP BY p.id");
 }
 
-$page_content = include_template('feed-main.php', [
-    'id' => $id,
-    'post_types' => $post_types,
+$post_content = include_template('posts-page.php', [
     'posts' => $posts
+]);
+$page_content = include_template('feed-main.php', [
+    'content' => $post_content,
+    'id' => $id,
+    'post_types' => $post_types
 ]);
 $layout_content = include_template('layout.php', [
     'content' => $page_content,

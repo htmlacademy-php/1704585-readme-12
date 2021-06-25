@@ -52,15 +52,13 @@ if ($db_link == false) {
     }
 
     if ($id) {
-        $count_condition = "WHERE tp.id = $id";
         $condition = "WHERE tp.id = $id";
     } else {
-        $count_condition = '';
         $condition = '';
     }
     $total_items = make_select_query($db_link, 
         "SELECT COUNT(p.id) AS total FROM posts p 
-        JOIN types tp ON p.post_type = tp.id " . $count_condition, true)['total'];
+        JOIN types tp ON p.post_type = tp.id " . $condition, true)['total'];
 
     $page_items = 6;
     $pages_count = ceil($total_items / $page_items);
@@ -75,15 +73,17 @@ if ($db_link == false) {
         $offset = '0';
     }
     
-    $posts = make_select_query ($db_link, 
-        "SELECT p.*, name, avatar_img AS avatar, type_name AS type, icon_class AS class, COUNT(DISTINCT c.id) AS comments, COUNT(l.id) AS likes
-        FROM posts p 
-            JOIN users us ON p.user_id = us.id
-            JOIN types tp ON p.post_type = tp.id 
-            LEFT JOIN comments c ON p.id = c.post_id
-            LEFT JOIN likes l ON l.post_id = p.id " .
-        $condition .
-        " GROUP BY p.id ORDER BY " . $sort_types[$sort - 1]['order_by'] . " DESC LIMIT " . $page_items . " OFFSET " . $offset);
+    if ($total_items) {
+        $posts = make_select_query ($db_link, 
+            "SELECT p.*, name, avatar_img AS avatar, type_name AS type, icon_class AS class, COUNT(DISTINCT c.id) AS comments, COUNT(l.id) AS likes
+            FROM posts p 
+                JOIN users us ON p.user_id = us.id
+                JOIN types tp ON p.post_type = tp.id 
+                LEFT JOIN comments c ON p.id = c.post_id
+                LEFT JOIN likes l ON l.post_id = p.id " .
+            $condition .
+            " GROUP BY p.id ORDER BY " . $sort_types[$sort - 1]['order_by'] . " DESC LIMIT " . $page_items . " OFFSET " . $offset);
+    }
 }
 
 date_default_timezone_set("Asia/Yekaterinburg");
