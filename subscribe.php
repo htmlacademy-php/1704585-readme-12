@@ -8,23 +8,23 @@ if ($db_link == false) {
 } else {
     mysqli_set_charset($db_link, "utf8");
 
-    if(isset($_GET['id'])) {
+    if (isset($_GET['id'])) {
         $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
     } else {
         $id = null;
     }
 
-    if($id) {
+    if ($id) {
         $check_id = mysqli_num_rows(mysqli_query($db_link, "SELECT id FROM users WHERE id = $id"));
         
-        if($check_id) {
+        if ($check_id) {
             $subscription = ['0' => $user['id'], '1' => $id];
             $sql = "INSERT INTO subscriptions (user_id, to_user_id) VALUES (?, ?);";
 
             $stmt = db_get_prepare_stmt($db_link, $sql, $subscription);
 
             $result = mysqli_stmt_execute($stmt);
-            if(!$result) {
+            if (!$result) {
                 print("Ошибка запроса: " . mysqli_error($db_link));
             } else {
                 $to_user = make_select_query($db_link, "SELECT name, email FROM users WHERE id = $id;", true);
@@ -38,11 +38,9 @@ if ($db_link == false) {
                 $message->setFrom(['keks@phpdemo.ru' => 'ReadMe']);
 
                 $result = $mailer->send($message);
-                
             }
         }
     }
 
     header("Location: profile.php?id=" . $id);
 }
-?>

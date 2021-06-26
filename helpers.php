@@ -158,7 +158,8 @@ function check_youtube_url($url)
 {
     $id = extract_youtube_id($url);
 
-    set_error_handler(function () {}, E_WARNING);
+    set_error_handler(function () {
+    }, E_WARNING);
     $headers = get_headers('https://www.youtube.com/oembed?format=json&url=http://www.youtube.com/watch?v=' . $id);
     restore_error_handler();
 
@@ -270,12 +271,13 @@ function generate_random_date($index)
  * @param boolean $is_simple проверяет необходимость добавления абзаца и кнопки продолжения, по умолчанию false
  * @return string итоговый HTML абзац
  */
-function cut_string ($string, $length = 300, $is_simple = false) {
+function cut_string($string, $length = 300, $is_simple = false)
+{
     $words = explode(" ", $string);
     $tail = '<a class="post-text__more-link" href="#">Читать далее</a>';
     $result_string = '';
     
-    if (mb_strlen($string) > $length){
+    if (mb_strlen($string) > $length) {
         $i = 0;
         $current_length = -1;
         $result_array = [];
@@ -308,7 +310,8 @@ function cut_string ($string, $length = 300, $is_simple = false) {
  * @param array $post массив с пользавательскими постами
  * @return array массив с отфильтрованными данными
  */
-function filter_posts ($posts) {
+function filter_posts($posts)
+{
     $new_posts = [];
     if ($posts) {
         foreach ($posts as $post) {
@@ -318,7 +321,7 @@ function filter_posts ($posts) {
                     $new_post[$key] = htmlspecialchars($string);
                 }
             }
-            array_push($new_posts , $new_post);
+            array_push($new_posts, $new_post);
         }
     }
     return $new_posts;
@@ -328,7 +331,8 @@ function filter_posts ($posts) {
  * Функция добавляет дату к постам пользователей
  * @param array &$posts ссылки на массив с постами пользователей
  */
-function add_time_to_post (&$posts) {
+function add_time_to_post(&$posts)
+{
     foreach ($posts as $key => &$post) {
         $post['datetime'] = generate_random_date($key);
     }
@@ -340,7 +344,8 @@ function add_time_to_post (&$posts) {
  * @param string $end_string окончание сообщения о времени, по умолчанию = назад
  * @return string результирующая строка сообщения
  */
-function make_datetime_relative ($datetime, $end_string = " назад") {
+function make_datetime_relative($datetime, $end_string = " назад")
+{
     $ts_input = strtotime($datetime);
     $ts_now = time();
     $count_minutes = ceil(($ts_now - $ts_input) / 60);
@@ -349,7 +354,7 @@ function make_datetime_relative ($datetime, $end_string = " назад") {
     $count = 0;
 
     switch ($count_minutes) {
-        case $count_minutes < 60: 
+        case $count_minutes < 60:
             $count = $count_minutes;
             $string = $count . get_noun_plural_form($count, " минута", " минуты", " минут");
             break;
@@ -385,10 +390,11 @@ function make_datetime_relative ($datetime, $end_string = " назад") {
  * @param boolean $one параметр определяет возвращаемый результат двумерный массив или просто массив с данными, по умолчанию false
  * @return array готовый массив с данными
  */
-function make_select_query ($db_link, $sql, $one = false) {
+function make_select_query($db_link, $sql, $one = false)
+{
     $result = mysqli_query($db_link, $sql);
     if ($result) {
-        if($one) {
+        if ($one) {
             return mysqli_fetch_assoc($result);
         }
         return mysqli_fetch_all($result, MYSQLI_ASSOC);
@@ -401,7 +407,8 @@ function make_select_query ($db_link, $sql, $one = false) {
  * @param string $name имя поля формы
  * @return string значение поля формы
  */
-function getPostVal ($name) {
+function getPostVal($name)
+{
     return filter_input(INPUT_POST, $name);
 }
 
@@ -411,7 +418,8 @@ function getPostVal ($name) {
  * @param string $title название поля формы
  * @return string сообщение об ошибке или null если поле заполнено
  */
-function validateFilled ($value, $title) {
+function validateFilled($value, $title)
+{
     if (empty($value)) {
         return $title . ". Это поле должно быть заполнено.";
     }
@@ -425,7 +433,8 @@ function validateFilled ($value, $title) {
  * @param string $title название поля формы
  * @return string сообщение об ошибке или null если ошибок нет
  */
-function validateFilledLength ($value, $max, $title) {
+function validateFilledLength($value, $max, $title)
+{
     $notEmpty = validateFilled($value, $title);
     if (!$notEmpty) {
         $length = mb_strlen($value);
@@ -433,7 +442,7 @@ function validateFilledLength ($value, $max, $title) {
             return "Текст не должен превышать " . $max . " знаков.";
         }
         return null;
-    } 
+    }
     return $notEmpty;
 }
 
@@ -444,7 +453,8 @@ function validateFilledLength ($value, $max, $title) {
  * @param boolean $video указатель на ссылку с Youtube, по умолчанию false
  * @return string сообщение об ошибке или null если ошибок нет
  */
-function validateUrl ($value, $title, $video = false) {
+function validateUrl($value, $title, $video = false)
+{
     $notEmpty = validateFilled($value, $title);
     if (!$notEmpty) {
         if (!filter_var($value, FILTER_VALIDATE_URL)) {
@@ -462,7 +472,8 @@ function validateUrl ($value, $title, $video = false) {
  * @param string $file файл у которого проверяется тип
  * @return string тип файла
  */
-function getFileType ($file) {
+function getFileType($file)
+{
     return image_type_to_mime_type(exif_imagetype($file));
 }
 
@@ -472,8 +483,9 @@ function getFileType ($file) {
  * @param array $available_types массив с допустимыми типами файлов
  * @return string возвращает ошибку если тип файла не соответствует допустимым типам, иначе возвращает null
  */
-function validateFileType ($file_type, $available_types) {
-    if(in_array($file_type, $available_types)) {
+function validateFileType($file_type, $available_types)
+{
+    if (in_array($file_type, $available_types)) {
         return null;
     }
     return "Неверный формат файла. Файл может быть PNG, JPEG или GIF.";
@@ -485,11 +497,12 @@ function validateFileType ($file_type, $available_types) {
  * @param array $fields список полей базы данных постов
  * @return array заполненный массив поста
  */
-function fillArray ($post, $fields) {
+function fillArray($post, $fields)
+{
     $result = [];
 
     foreach ($fields as $key => $field) {
-        if(isset($post[$field])) {
+        if (isset($post[$field])) {
             $result[$field] = $post[$field];
         } else {
             $result[$field] = null;
@@ -504,8 +517,9 @@ function fillArray ($post, $fields) {
  * @param array $tags входящий массив с тегами
  * @return string возвращает ошибку или null если все в порядке
  */
-function validate_tags ($tags) {
-    foreach($tags as $key => $value) {
+function validate_tags($tags)
+{
+    foreach ($tags as $key => $value) {
         if (!preg_match('/^[a-zа-яё0-9_-]+$/ui', $value)) {
             return "Неверный формат тегов";
         }

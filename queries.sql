@@ -29,7 +29,7 @@ VALUES
     'Цитата',
     'Мы в жизни любим только раз, а после ищем лишь похожих',
     (SELECT id FROM users WHERE name = 'Лариса'),
-    (SELECT id FROM types WHERE type_name = 'post-quote'),
+    (SELECT id FROM types WHERE type_name = 'Цитата'),
     0
 );
 
@@ -42,7 +42,7 @@ VALUES
     'Игра престолов',
     'Не могу дождаться начала финального сезона своего любимого сериала!',
     (SELECT id FROM users WHERE name = 'Владик'),
-    (SELECT id FROM types WHERE type_name = 'post-text'),
+    (SELECT id FROM types WHERE type_name = 'Текст'),
     0
 );
 
@@ -55,14 +55,14 @@ VALUES
     'Наконец, обработал фотки!',
     'rock-medium.jpg',
     (SELECT id FROM users WHERE name = 'Виктор'),
-    (SELECT id FROM types WHERE type_name = 'post-photo'),
+    (SELECT id FROM types WHERE type_name = 'Картинка'),
     0
 ),
 (
     'Моя мечта',
     'coast-medium.jpg',
     (SELECT id FROM users WHERE name = 'Лариса'),
-    (SELECT id FROM types WHERE type_name = 'post-photo'),
+    (SELECT id FROM types WHERE type_name = 'Картинка'),
     0
 );
 
@@ -75,7 +75,7 @@ VALUES
     'Лучшие курсы',
     'www.htmlacademy.ru',
     (SELECT id FROM users WHERE name = 'Владик'),
-    (SELECT id FROM types WHERE type_name = 'post-link'),
+    (SELECT id FROM types WHERE type_name = 'Ссылка'),
     0
 );
 

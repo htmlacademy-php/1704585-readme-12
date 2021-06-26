@@ -6,5 +6,3 @@ $transport->setUsername($transport_username);
 $transport->setPassword($transport_password);
 
 $mailer = new Swift_Mailer($transport);
-
-?>

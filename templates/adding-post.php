@@ -26,7 +26,7 @@
                     <form class="adding-post__form form" action="/add.php?<?=http_build_query([ 'id' => $id ]); ?>" method="post" enctype="multipart/form-data">
                     <div class="form__text-inputs-wrapper">
                         <div class="form__text-inputs">
-                        <div class="adding-post__input-wrapper form__input-wrapper <?php if(array_key_exists("title", $errors)): ?> form__input-section--error <?php endif; ?>">
+                        <div class="adding-post__input-wrapper form__input-wrapper <?php if (array_key_exists("title", $errors)): ?> form__input-section--error <?php endif; ?>">
                             <label class="adding-post__label form__label" for="heading">Заголовок <span class="form__input-required">*</span></label>
                             <div class="form__input-section">
                             <input class="adding-post__input form__input" id="heading" type="text" name="title" value="<?=getPostVal('title'); ?>" placeholder="Введите заголовок">
@@ -38,7 +38,7 @@
                             </div>
                         </div>
                         <?=$content; ?>
-                        <div class="adding-post__input-wrapper form__input-wrapper <?php if(array_key_exists("tags", $errors)): ?> form__input-section--error <?php endif; ?>">
+                        <div class="adding-post__input-wrapper form__input-wrapper <?php if (array_key_exists("tags", $errors)): ?> form__input-section--error <?php endif; ?>">
                             <label class="adding-post__label form__label" for="tags">Теги</label>
                             <div class="form__input-section">
                             <input class="adding-post__input form__input" id="tags" type="text" name="tags" value="<?=getPostVal('tags'); ?>" placeholder="Введите теги">

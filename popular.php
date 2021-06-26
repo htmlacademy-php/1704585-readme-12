@@ -19,7 +19,7 @@ $sort_types = [
         'id' => '3',
         'title' => 'Дата',
         'order_by' => 'published_at'
-    ] 
+    ]
 ];
 
 $post_types = [];
@@ -45,7 +45,7 @@ if ($db_link == false) {
         $sort = '1';
     }
 
-    if(isset($_GET['page'])) {
+    if (isset($_GET['page'])) {
         $current_page = filter_input(INPUT_GET, 'page', FILTER_SANITIZE_NUMBER_INT);
     } else {
         $current_page = '1';
@@ -56,15 +56,18 @@ if ($db_link == false) {
     } else {
         $condition = '';
     }
-    $total_items = make_select_query($db_link, 
+    $total_items = make_select_query(
+        $db_link,
         "SELECT COUNT(p.id) AS total FROM posts p 
-        JOIN types tp ON p.post_type = tp.id " . $condition, true)['total'];
+        JOIN types tp ON p.post_type = tp.id " . $condition,
+        true
+    )['total'];
 
     $page_items = 6;
     $pages_count = ceil($total_items / $page_items);
 
     if ($current_page) {
-        if($current_page > $pages_count) {
+        if ($current_page > $pages_count) {
             $current_page = $pages_count;
         }
         $offset = ($current_page - 1) * $page_items;
@@ -74,7 +77,8 @@ if ($db_link == false) {
     }
     
     if ($total_items) {
-        $posts = make_select_query ($db_link, 
+        $posts = make_select_query(
+            $db_link,
             "SELECT p.*, name, avatar_img AS avatar, type_name AS type, icon_class AS class, COUNT(DISTINCT c.id) AS comments, COUNT(l.id) AS likes
             FROM posts p 
                 JOIN users us ON p.user_id = us.id
@@ -82,7 +86,8 @@ if ($db_link == false) {
                 LEFT JOIN comments c ON p.id = c.post_id
                 LEFT JOIN likes l ON l.post_id = p.id " .
             $condition .
-            " GROUP BY p.id ORDER BY " . $sort_types[$sort - 1]['order_by'] . " DESC LIMIT " . $page_items . " OFFSET " . $offset);
+            " GROUP BY p.id ORDER BY " . $sort_types[$sort - 1]['order_by'] . " DESC LIMIT " . $page_items . " OFFSET " . $offset
+        );
     }
 }
 
@@ -108,4 +113,3 @@ $layout_content = include_template('layout.php', [
     ]);
 
 print($layout_content);
-?>

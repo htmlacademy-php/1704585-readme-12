@@ -4,7 +4,7 @@ require_once('default-config.php');
 
 session_start();
 
-if(isset($_SESSION['user'])) {
+if (isset($_SESSION['user'])) {
     header("Location: /feed.php");
     exit();
 }
@@ -27,7 +27,7 @@ if ($db_link == false) {
             }
         }
 
-        if (empty($errors)){
+        if (empty($errors)) {
             $login = mysqli_real_escape_string($db_link, $post['login']);
             $sql = "SELECT * FROM users WHERE name = '$login'";
             $user = make_select_query($db_link, $sql, true);
@@ -56,4 +56,3 @@ $layout_content = include_template('layout-main.php', [
 ]);
 
 print($layout_content);
-?>

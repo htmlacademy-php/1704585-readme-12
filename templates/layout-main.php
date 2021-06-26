@@ -60,7 +60,7 @@
             <section class="authorization">
             <h2 class="visually-hidden">Авторизация</h2>
             <form class="authorization__form form" action="#" method="post">
-                <div class="authorization__input-wrapper form__input-wrapper <?php if(array_key_exists("login", $errors)): ?> form__input-section--error <?php endif; ?>">
+                <div class="authorization__input-wrapper form__input-wrapper <?php if (array_key_exists("login", $errors)): ?> form__input-section--error <?php endif; ?>">
                     <input class="authorization__input authorization__input--login form__input" type="text" name="login" value="<?=getPostVal('login'); ?>" placeholder="Логин">
                     <svg class="form__input-icon" width="19" height="18">
                         <use xlink:href="#icon-input-user"></use>
@@ -68,11 +68,11 @@
                     <div class="form__input-section form__input-section--error">
                         <label class="visually-hidden">Логин</label>
                     </div>
-                    <?php if(array_key_exists("login", $errors)): ?>
+                    <?php if (array_key_exists("login", $errors)): ?>
                         <span class="form__error-label form__error-label--login"><?=$errors['login']; ?></span>
                     <?php endif; ?>
                 </div>
-                <div class="authorization__input-wrapper form__input-wrapper <?php if(array_key_exists("password", $errors)): ?> form__input-section--error <?php endif; ?>">
+                <div class="authorization__input-wrapper form__input-wrapper <?php if (array_key_exists("password", $errors)): ?> form__input-section--error <?php endif; ?>">
                     <input class="authorization__input authorization__input--password form__input" type="password" name="password" value="<?=getPostVal('password'); ?>" placeholder="Пароль">
                     <svg class="form__input-icon" width="16" height="20">
                         <use xlink:href="#icon-input-password"></use>
@@ -80,7 +80,7 @@
                     <div class="form__input-section form__input-section--error">
                         <label class="visually-hidden">Пароль</label>
                     </div>
-                    <?php if(array_key_exists("password", $errors)): ?>
+                    <?php if (array_key_exists("password", $errors)): ?>
                         <span class="form__error-label"><?=$errors['password']; ?></span>
                     <?php endif; ?>
                 </div>

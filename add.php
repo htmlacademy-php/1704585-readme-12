@@ -65,11 +65,10 @@ if ($db_link == false) {
                 $finfo = finfo_open(FILEINFO_MIME_TYPE);
                 $file_type = finfo_file($finfo, $tmp_name);
                 $valid_type = validateFileType($file_type, $avalable_file_types);
-                if(!$valid_type) {
+                if (!$valid_type) {
                     move_uploaded_file($tmp_name, 'uploads/' . $img_name);
                     $post['img'] = $img_name;
-                }
-                else {
+                } else {
                     $errors['file'] = $valid_type;
                 }
             } elseif (empty($_POST['url'])) {
@@ -83,8 +82,7 @@ if ($db_link == false) {
                         $img_name = pathinfo($_POST['url'], PATHINFO_BASENAME);
                         file_put_contents('uploads/' . $img_name, $file);
                         $post['img'] = $img_name;
-                    }
-                    else {
+                    } else {
                         $errors['file'] = $valid_type;
                     }
                 }
@@ -93,7 +91,7 @@ if ($db_link == false) {
 
         $tags = [];
 
-        if(isset($post['tags']) && !empty($post['tags'])) {
+        if (isset($post['tags']) && !empty($post['tags'])) {
             $tags = explode(' ', $post['tags']);
             $check_tags = validate_tags($tags);
             if ($check_tags) {
@@ -104,7 +102,6 @@ if ($db_link == false) {
         $errors = array_filter($errors);
         
         if (!count($errors)) {
-            
             if (isset($post['text'])) {
                 $post['content'] = $post['text'];
             }
@@ -121,7 +118,7 @@ if ($db_link == false) {
             $stmt = db_get_prepare_stmt($db_link, $sql, $post);
             
             $result = mysqli_stmt_execute($stmt);
-            if($result) {
+            if ($result) {
                 $post_id = mysqli_insert_id($db_link);
                 
                 foreach ($tags as $key => $tag) {
@@ -133,7 +130,7 @@ if ($db_link == false) {
 
                         $stmt = db_get_prepare_stmt($db_link, $sql, $insert_tag);
                         $result = mysqli_stmt_execute($stmt);
-                        if($result) {
+                        if ($result) {
                             $tag_id = mysqli_insert_id($db_link);
                         } else {
                             print("Ошибка запроса: " . mysqli_error($db_link));
@@ -152,8 +149,10 @@ if ($db_link == false) {
                     }
                 }
 
-                $subscribed_users = make_select_query($db_link, 
-                    "SELECT name, email FROM users WHERE id IN (SELECT user_id FROM subscriptions WHERE to_user_id = $user_id);");
+                $subscribed_users = make_select_query(
+                    $db_link,
+                    "SELECT name, email FROM users WHERE id IN (SELECT user_id FROM subscriptions WHERE to_user_id = $user_id);"
+                );
                                
                 foreach ($subscribed_users as $subscribed_user) {
                     $message_content = "Здравствуйте, " . $subscribed_user['name'] . ". Пользователь " . $user['name'] . " только что опубликовал новую запись \"" . $post['title'] . "\" . Посмотрите её на странице пользователя: ";
@@ -182,7 +181,7 @@ $add_content = include_template($add_file, [
     'errors' => $errors
     ]);
 $page_content = include_template('adding-post.php', [
-    'content' => $add_content,
+    'content' => filter_posts($add_content),
     'post_types' => $post_types,
     'errors' => $errors,
     'id' => $id
@@ -197,4 +196,3 @@ $layout_content = include_template('layout.php', [
     ]);
 
 print($layout_content);
-?>
