@@ -96,4 +96,4 @@ ALTER TABLE likes
 ALTER TABLE posts
     ADD is_repost BOOLEAN DEFAULT 0,
     ADD author_id INT,
-    ADD repost_count INT;
+    ADD repost_count INT DEFAULT 0;

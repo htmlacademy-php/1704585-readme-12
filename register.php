@@ -56,14 +56,13 @@ if ($db_link == false) {
                     $finfo = finfo_open(FILEINFO_MIME_TYPE);
                     $file_type = finfo_file($finfo, $tmp_name);
                     $valid_type = validateFileType($file_type, ['image/png', 'image/jpeg', 'image/gif']);
-                    if(!$valid_type) {
+                    if (!$valid_type) {
                         move_uploaded_file($tmp_name, 'img/' . $img_name);
                         $post['avatar_img'] = $img_name;
                         $img_key = ', avatar_img';
                         $img_value = ', ?';
                         $user_fields[3] = 'avatar_img';
-                    }
-                    else {
+                    } else {
                         $errors['file'] = $valid_type;
                     }
                 }
@@ -100,4 +99,3 @@ $layout_content = include_template('layout.php', [
     ]);
 
 print($layout_content);
-?>

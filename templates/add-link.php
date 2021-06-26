@@ -1,4 +1,4 @@
-<div class="adding-post__textarea-wrapper form__input-wrapper <?php if(array_key_exists("link", $errors)): ?> form__input-section--error <?php endif; ?>">
+<div class="adding-post__textarea-wrapper form__input-wrapper <?php if (array_key_exists("link", $errors)): ?> form__input-section--error <?php endif; ?>">
     <label class="adding-post__label form__label" for="link">Ссылка <span class="form__input-required">*</span></label>
     <div class="form__input-section">
         <input class="adding-post__input form__input" id="link" type="text" name="link" value="<?=getPostVal('link'); ?>">

@@ -15,18 +15,17 @@ $user = $_SESSION['user'];
 
 $header_my_nav = [
     [
-        'page' => 'popular', 
+        'page' => 'popular',
         'title' => 'Популярный контент'
     ],
     [
-        'page' => 'feed', 
+        'page' => 'feed',
         'title' => 'Моя лента'
     ],
     [
-        'page' => 'messages', 
+        'page' => 'messages',
         'title' => 'Личные сообщения'
     ]
 ];
 
 $db_link = mysqli_connect($localhost, $db_user, $db_password, $db_session);
-?>

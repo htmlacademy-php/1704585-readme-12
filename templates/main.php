@@ -9,7 +9,7 @@
                     <ul class="popular__sorting-list sorting__list">
                         <?php foreach ($sort_types as $sort_type): ?>
                             <li class="sorting__item">
-                                <a class="sorting__link<?php if($sort === $sort_type['id']): ?> sorting__link--active <?php endif; ?>" 
+                                <a class="sorting__link<?php if ($sort === $sort_type['id']): ?> sorting__link--active <?php endif; ?>" 
                                 href="/popular.php?<?=http_build_query(array_merge($_GET, [ 'order_by' => $sort_type['id'] ])); ?>">
                                     <span><?=$sort_type['title']; ?></span>
                                     <svg class="sorting__icon" width="10" height="12">
@@ -33,7 +33,7 @@
                         <?php foreach ($post_types as $types): ?>
                             <li class="popular__filters-item filters__item">
                                 <a class="filters__button filters__button--<?=$types['icon_class']; ?> button
-                                <?php if($id === $types['id']): ?> filters__button--active <?php endif; ?>" 
+                                <?php if ($id === $types['id']): ?> filters__button--active <?php endif; ?>" 
                                 href="/popular.php?<?=http_build_query(array_merge($_GET, [ 'id' => $types['id'] ])); ?>">
                                     <span class="visually-hidden"><?=$types['type_name']; ?></span>
                                     <svg class="filters__icon" width="22" height="18">
@@ -113,7 +113,7 @@
                                 </div>
                                 <div class="post__info">
                                     <b class="post__author-name"><?=$post['name']; ?><!--здесь имя пользоателя--></b>
-                                    <time class="post__time" datetime="<?=$post['published_at']; ?>" title="<?=date("d.m.Y H:i", strtotime($post['published_at'])); ?>">
+                                    <time class="post__time" datetime="<?=is_date_valid($post['published_at']); ?>" title="<?=date("d.m.Y H:i", strtotime($post['published_at'])); ?>">
                                         <?=make_datetime_relative($post['published_at']); ?>
                                     </time>
                                 </div>

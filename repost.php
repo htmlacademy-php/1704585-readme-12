@@ -7,7 +7,7 @@ if ($db_link == false) {
 } else {
     mysqli_set_charset($db_link, "utf8");
 
-    if(isset($_GET['id'])) {
+    if (isset($_GET['id'])) {
         $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
     } else {
         $id = null;
@@ -17,11 +17,14 @@ if ($db_link == false) {
         $check_id = mysqli_num_rows(mysqli_query($db_link, "SELECT id FROM posts WHERE id = $id"));
         
         if ($check_id) {
-            $post = make_select_query($db_link, 
-            "SELECT title, content, author, img, video, link, user_id, post_type, is_repost, author_id, repost_count
-            FROM posts WHERE id = $id;", true);
+            $post = make_select_query(
+                $db_link,
+                "SELECT title, content, author, img, video, link, user_id, post_type, is_repost, author_id, repost_count
+            FROM posts WHERE id = $id;",
+                true
+            );
 
-            if ($post['user_id'] === $user['id'] OR $post['author_id'] === $user['id']) {
+            if ($post['user_id'] === $user['id'] or $post['author_id'] === $user['id']) {
                 header("Location: " . $_SERVER['HTTP_REFERER']);
                 exit();
             } else {
@@ -48,4 +51,3 @@ if ($db_link == false) {
         }
     }
 }
-?>

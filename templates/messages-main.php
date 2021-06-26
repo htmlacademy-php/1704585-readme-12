@@ -45,7 +45,7 @@
                                     <a class="messages__author" href="/profile.php?id=<?=$message['id']; ?>">
                                         <?=$message['name']; ?>
                                     </a>
-                                    <time class="messages__time" datetime="<?=$message['published_at']; ?>">
+                                    <time class="messages__time" datetime="<?=is_date_valid($message['published_at']); ?>">
                                         <?=make_datetime_relative($message['published_at']); ?>
                                     </time>
                                 </div>

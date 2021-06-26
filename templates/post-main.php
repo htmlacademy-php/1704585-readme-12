@@ -38,7 +38,7 @@
                                 <span class="post__view"><?=$post['show_count']; ?> просмотров</span>
                             </div>
                             <ul class="post__tags">
-                                <?php foreach($tags as $key => $value): ?>
+                                <?php foreach ($tags as $key => $value): ?>
                                     <li><a href="/search.php?query=<?=urlencode('#' . $value['tag']); ?>">#<?=$value['tag']; ?></a></li>
                                 <?php endforeach; ?>
                             </ul>
@@ -60,7 +60,7 @@
                                 </form>
                                 <div class="comments__list-wrapper">
                                     <ul class="comments__list">
-                                        <?php foreach($comments as $comment): ?>
+                                        <?php foreach ($comments as $comment): ?>
                                             <li class="comments__item user">
                                                 <div class="comments__avatar">
                                                     <a class="user__avatar-link" href="/profile.php?id=<?=$comment['id']; ?>">
@@ -83,7 +83,7 @@
                                             </li>
                                         <?php endforeach; ?>
                                     </ul>
-                                    <?php if($post['comments'] > 4): ?>
+                                    <?php if ($post['comments'] > 4): ?>
                                         <a class="comments__more-link" href="#">
                                             <span>Показать все комментарии</span>
                                             <sup class="comments__amount"><?=$post['comments']; ?></sup>
@@ -103,7 +103,7 @@
                                     <a class="post-details__name user__name" href="/profile.php?id=<?=$post['user_id']; ?>">
                                         <span><?=$user['name'];?></span>
                                     </a>
-                                    <time class="post-details__time user__time" datetime="2014-03-20"><?=make_datetime_relative($user['created_at'], " на сайте"); ?></time>
+                                    <time class="post-details__time user__time" datetime="<?=is_date_valid($user['created_at']); ?>"><?=make_datetime_relative($user['created_at'], " на сайте"); ?></time>
                                 </div>
                             </div>
                             <div class="post-details__rating user__rating">

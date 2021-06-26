@@ -12,4 +12,3 @@ $localhost = $local_host ?? '127.0.0.1';
 $db_user = $db_local_user ?? 'root';
 $db_password = $db_local_password ?? 'password';
 $db_session = $db_local_session ?? 'readme';
-?>

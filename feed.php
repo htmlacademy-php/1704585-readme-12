@@ -24,7 +24,8 @@ if ($db_link == false) {
     }
     $user_id = $user['id'];
 
-    $posts = make_select_query ($db_link, 
+    $posts = make_select_query(
+        $db_link,
         "SELECT p.*, name, avatar_img AS avatar, type_name AS type, icon_class AS class, COUNT(c.id) AS comments, COUNT(l.id) AS likes
         FROM posts p 
             JOIN users us ON p.user_id = us.id
@@ -33,11 +34,12 @@ if ($db_link == false) {
             LEFT JOIN likes l ON l.post_id = p.id 
         WHERE p.user_id IN (SELECT to_user_id FROM subscriptions WHERE user_id = $user_id)" .
         $condition .
-        " GROUP BY p.id");
+        " GROUP BY p.id"
+    );
 }
 
 $post_content = include_template('posts-page.php', [
-    'posts' => $posts
+    'posts' => filter_posts($posts)
 ]);
 $page_content = include_template('feed-main.php', [
     'content' => $post_content,
@@ -55,4 +57,3 @@ $layout_content = include_template('layout.php', [
 ]);
 
 print($layout_content);
-?>
