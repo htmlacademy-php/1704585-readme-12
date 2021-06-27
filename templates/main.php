@@ -113,7 +113,7 @@
                                 </div>
                                 <div class="post__info">
                                     <b class="post__author-name"><?=$post['name']; ?><!--здесь имя пользоателя--></b>
-                                    <time class="post__time" datetime="<?=is_date_valid($post['published_at']); ?>" title="<?=date("d.m.Y H:i", strtotime($post['published_at'])); ?>">
+                                    <time class="post__time" datetime="<?=$post['published_at']; ?>" title="<?=date("d.m.Y H:i", strtotime($post['published_at'])); ?>">
                                         <?=make_datetime_relative($post['published_at']); ?>
                                     </time>
                                 </div>
