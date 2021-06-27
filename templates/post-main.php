@@ -103,7 +103,7 @@
                                     <a class="post-details__name user__name" href="/profile.php?id=<?=$post['user_id']; ?>">
                                         <span><?=$user['name'];?></span>
                                     </a>
-                                    <time class="post-details__time user__time" datetime="<?=is_date_valid($user['created_at']); ?>"><?=make_datetime_relative($user['created_at'], " на сайте"); ?></time>
+                                    <time class="post-details__time user__time" datetime="<?=$user['created_at']; ?>"><?=make_datetime_relative($user['created_at'], " на сайте"); ?></time>
                                 </div>
                             </div>
                             <div class="post-details__rating user__rating">
