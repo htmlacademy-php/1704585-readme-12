@@ -1,4 +1,6 @@
-<div class="adding-post__textarea-wrapper form__textarea-wrapper <?php if (array_key_exists("text", $errors)): ?> form__input-section--error <?php endif; ?>">
+<div class="adding-post__textarea-wrapper form__textarea-wrapper <?php if (array_key_exists("text", $errors)) :
+    ?> form__input-section--error <?php
+                                                                 endif; ?>">
     <label class="adding-post__label form__label" for="text">Текст поста <span class="form__input-required">*</span></label>
     <div class="form__input-section">
         <textarea class="adding-post__textarea form__textarea form__input" id="text" name="text" placeholder="Введите текст публикации"><?=getPostVal('text'); ?></textarea>

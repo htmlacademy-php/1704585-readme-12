@@ -38,7 +38,7 @@
                                 <span class="post__view"><?=$post['show_count']; ?> просмотров</span>
                             </div>
                             <ul class="post__tags">
-                                <?php foreach ($tags as $key => $value): ?>
+                                <?php foreach ($tags as $key => $value) : ?>
                                     <li><a href="/search.php?query=<?=urlencode('#' . $value['tag']); ?>">#<?=$value['tag']; ?></a></li>
                                 <?php endforeach; ?>
                             </ul>
@@ -47,7 +47,9 @@
                                     <div class="comments__my-avatar">
                                             <img class="comments__picture" src="img/<?=$auth_user['avatar_img']?>" alt="Аватар пользователя">
                                     </div>
-                                    <div class="form__input-section<?php if ($errors): ?> form__input-section--error<?php endif; ?>">
+                                    <div class="form__input-section<?php if ($errors) :
+                                        ?> form__input-section--error<?php
+                                                                   endif; ?>">
                                         <textarea class="comments__textarea form__textarea form__input" name="text" placeholder="Ваш комментарий"><?=$comment; ?></textarea>
                                         <label class="visually-hidden">Ваш комментарий</label>
                                         <button class="form__error-button button" type="button">!</button>
@@ -60,7 +62,7 @@
                                 </form>
                                 <div class="comments__list-wrapper">
                                     <ul class="comments__list">
-                                        <?php foreach ($comments as $comment): ?>
+                                        <?php foreach ($comments as $comment) : ?>
                                             <li class="comments__item user">
                                                 <div class="comments__avatar">
                                                     <a class="user__avatar-link" href="/profile.php?id=<?=$comment['id']; ?>">
@@ -83,7 +85,7 @@
                                             </li>
                                         <?php endforeach; ?>
                                     </ul>
-                                    <?php if ($post['comments'] > 4): ?>
+                                    <?php if ($post['comments'] > 4) : ?>
                                         <a class="comments__more-link" href="#">
                                             <span>Показать все комментарии</span>
                                             <sup class="comments__amount"><?=$post['comments']; ?></sup>
@@ -117,9 +119,9 @@
                                 </p>
                             </div>
                             <div class="post-details__user-buttons user__buttons">
-                                <?php if (!$is_subscribe): ?>
+                                <?php if (!$is_subscribe) : ?>
                                     <button class="user__button user__button--subscription button button--main" onClick='location.href="/subscribe.php?id=<?=$user['id']; ?>"' type="button">Подписаться</button>
-                                <?php else: ?>
+                                <?php else : ?>
                                     <button class="user__button user__button--subscription button button--quartz" onClick='location.href="/unsubscribe.php?id=<?=$user['id']; ?>"' type="button">Отписаться</button>
                                 <?php endif; ?>
                                 <a class="user__button user__button--writing button button--green" href="/messages.php?id=<?=$post['user_id']; ?>">Сообщение</a>
