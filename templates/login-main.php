@@ -5,7 +5,9 @@
     <section class="login container">
         <h2 class="visually-hidden">Форма авторизации</h2>
         <form class="login__form form" action="#" method="post">
-            <div class="login__input-wrapper form__input-wrapper<?php if (array_key_exists('email', $errors)): ?>  form__input-section--error<?php endif; ?>">
+            <div class="login__input-wrapper form__input-wrapper<?php if (array_key_exists('email', $errors)) :
+                ?>  form__input-section--error<?php
+                                                                endif; ?>">
                 <label class="login__label form__label" for="login-email">Электронная почта</label>
                 <div class="form__input-section">
                     <input class="login__input form__input" id="login-email" type="email" name="email" value="<?=getPostVal('email')?>" placeholder="Укажите эл.почту">
@@ -16,7 +18,9 @@
                     </div>
                 </div>
             </div>
-            <div class="login__input-wrapper form__input-wrapper <?php if (array_key_exists('password', $errors)): ?>  form__input-section--error<?php endif; ?>">
+            <div class="login__input-wrapper form__input-wrapper <?php if (array_key_exists('password', $errors)) :
+                ?>  form__input-section--error<?php
+                                                                 endif; ?>">
                 <label class="login__label form__label" for="login-password">Пароль</label>
                 <div class="form__input-section">
                     <input class="login__input form__input" id="login-password" type="password" name="password" placeholder="Введите пароль">

@@ -22,7 +22,7 @@
                 micro blogging
             </p>
         </div>
-        <?php if ($is_auth === 1): ?>
+        <?php if ($is_auth === 1) : ?>
         <form class="header__search-form form" action="/search.php" method="get">
             <div class="header__search">
                 <label class="visually-hidden">Поиск</label>
@@ -38,11 +38,15 @@
         <?php endif; ?>
         <div class="header__nav-wrapper">
             <nav class="header__nav">
-                <?php if ($is_auth === 1): ?>
+                <?php if ($is_auth === 1) : ?>
                 <ul class="header__my-nav">
-                    <?php foreach ($header_my_nav as $element): ?>
+                    <?php foreach ($header_my_nav as $element) : ?>
                         <li class="header__my-page header__my-page--<?=$element['page']; ?>">
-                            <a class="header__page-link<?php if ($page === $element['page']): ?> header__page-link--active"<?php else: ?>" href="<?=$element['page']; ?>.php"<?php endif; ?> title="<?=$element['title']?>">
+                            <a class="header__page-link<?php if ($page === $element['page']) :
+                                ?> header__page-link--active"<?php
+                                                       else :
+                                                            ?>" href="<?=$element['page']; ?>.php"<?php
+                                                       endif; ?> title="<?=$element['title']?>">
                                 <span class="visually-hidden"><?=$element['title']?></span>
                             </a>
                         </li>
@@ -92,25 +96,33 @@
                                     </a>
                                 </li>
                             </ul>
-                <?php else: ?>
+                <?php else : ?>
                             <ul class="header__user-nav">
                                 <li class="header__authorization">
-                                    <a class="header__user-button header__authorization-button button<?php if ($is_login): ?> header__user-button--active" <?php else: ?>" href="/login.php" <?php endif; ?>>Вход</a>
+                                    <a class="header__user-button header__authorization-button button<?php if ($is_login) :
+                                        ?> header__user-button--active" <?php
+                                                                                                     else :
+                                                                                                            ?>" href="/login.php" <?php
+                                                                                                     endif; ?>>Вход</a>
                                 </li>
                                 <li>
-                                    <a class="header__user-button header__register-button button<?php if (!$is_login): ?> header__user-button--active" <?php else: ?>" href="/register.php" <?php endif; ?>>Регистрация</a>
+                                    <a class="header__user-button header__register-button button<?php if (!$is_login) :
+                                        ?> header__user-button--active" <?php
+                                                                                                else :
+                                                                                                    ?>" href="/register.php" <?php
+                                                                                                endif; ?>>Регистрация</a>
                                 </li>
                             </ul>
                 <?php endif; ?>
                             </div>
                         </div>
                     </li>
-                    <?php if ($is_auth === 1): ?>
-                        <?php if ($add_form): ?>
+                    <?php if ($is_auth === 1) : ?>
+                        <?php if ($add_form) : ?>
                         <li>
                             <a class="header__post-button header__post-button--active button button--transparent" href="/popular.php">Закрыть</a>
                         </li>
-                        <?php else: ?>
+                        <?php else : ?>
                         <li>
                             <a class="header__post-button button button--transparent" href="/add.php">Пост</a>
                         </li>

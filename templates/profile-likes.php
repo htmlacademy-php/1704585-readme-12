@@ -2,7 +2,7 @@
     <section class="profile__likes tabs__content tabs__content--active">
         <h2 class="visually-hidden">Лайки</h2>
         <ul class="profile__likes-list">
-            <?php foreach ($content as $like): ?>
+            <?php foreach ($content as $like) : ?>
             <li class="post-mini post-mini--photo post user">
                 <div class="post-mini__user-info user__info">
                     <div class="post-mini__avatar user__avatar">
@@ -22,19 +22,19 @@
                 </div>
                 <div class="post-mini__preview">
                     <a class="post-mini__link" href="/post.php?id=<?=$like['post_id']; ?>" title="Перейти на публикацию">
-                        <?php if ($like['type'] === 'photo'): ?>
+                        <?php if ($like['type'] === 'photo') : ?>
                             <div class="post-mini__image-wrapper">
                             <img class="post-mini__image" src="uploads/<?=$like['img']; ?>" width="109" height="109" alt="Превью публикации">
                             </div>
                             <span class="visually-hidden">Фото</span>
                         <?php endif; ?>
-                        <?php if ($like['type'] === 'text'): ?>
+                        <?php if ($like['type'] === 'text') : ?>
                             <span class="visually-hidden">Текст</span>
                             <svg class="post-mini__preview-icon" width="20" height="21">
                                 <use xlink:href="#icon-filter-text"></use>
                             </svg>
                         <?php endif; ?>
-                        <?php if ($like['type'] === 'video'): ?>
+                        <?php if ($like['type'] === 'video') : ?>
                             <div class="post-mini__image-wrapper">
                                 <img class="post-mini__image" src="img/coast-small.png" width="109" height="109" alt="Превью публикации">
                                 <span class="post-mini__play-big">
@@ -45,13 +45,13 @@
                             </div>
                             <span class="visually-hidden">Видео</span>
                         <?php endif; ?>
-                        <?php if ($like['type'] === 'quote'): ?>
+                        <?php if ($like['type'] === 'quote') : ?>
                             <span class="visually-hidden">Цитата</span>
                             <svg class="post-mini__preview-icon" width="21" height="20">
                                 <use xlink:href="#icon-filter-quote"></use>
                             </svg>
                         <?php endif; ?>
-                        <?php if ($like['type'] === 'link'): ?>
+                        <?php if ($like['type'] === 'link') : ?>
                             <span class="visually-hidden">Ссылка</span>
                             <svg class="post-mini__preview-icon" width="21" height="18">
                                 <use xlink:href="#icon-filter-link"></use>

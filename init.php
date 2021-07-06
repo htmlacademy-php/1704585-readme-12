@@ -7,10 +7,9 @@ $is_auth = 0;
 if (!isset($_SESSION['user'])) {
     header("Location: /index.php");
     exit();
-} else {
-    $is_auth = 1;
 }
 
+$is_auth = 1;
 $user = $_SESSION['user'];
 
 $header_my_nav = [
@@ -29,3 +28,5 @@ $header_my_nav = [
 ];
 
 $db_link = mysqli_connect($localhost, $db_user, $db_password, $db_session);
+
+date_default_timezone_set("Asia/Yekaterinburg");

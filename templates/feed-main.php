@@ -17,10 +17,12 @@
                         <span>Все</span>
                     </a>
                 </li>
-                <?php foreach ($post_types as $type): ?>
+                <?php foreach ($post_types as $type) : ?>
                 <li class="feed__filters-item filters__item">
                     <a class="filters__button filters__button--<?=$type['icon_class']; ?> button 
-                        <?php if ($id === $type['id']): ?> filters__button--active<?php endif; ?>" 
+                        <?php if ($id === $type['id']) :
+                            ?> filters__button--active<?php
+                        endif; ?>" 
                         href="/feed.php?<?=http_build_query(array_merge($_GET, [ 'id' => $type['id'] ])); ?>">
                         <span class="visually-hidden"><?=$type['type_name']; ?></span>
                         <svg class="filters__icon" width="22" height="18">

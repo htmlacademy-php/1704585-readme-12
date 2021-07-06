@@ -12,5 +12,19 @@
     "require": {
         "swiftmailer/swiftmailer": "^6.2",
         "friendsofphp/php-cs-fixer": "^3.0"
+    },
+    "scripts": {
+        "test": "vendor/bin/simple-phpunit",
+        "phpstan": "vendor/bin/phpstan analyse",
+        "code-sniffer": [
+            "./vendor/bin/phpcs --config-set default_standard phpcs.xml",
+            "./vendor/bin/phpcs --config-set color 1"
+        ],
+        "post-install-cmd": [
+            "@code-sniffer"
+        ],
+        "post-update-cmd": [
+            "@code-sniffer"
+        ]
     }
 }

@@ -4,9 +4,11 @@
             <h2 class="visually-hidden">Сообщения</h2>
             <div class="messages__contacts">
                 <ul class="messages__contacts-list tabs__list">
-                    <?php foreach ($user_list as $user): ?>
+                    <?php foreach ($user_list as $user) : ?>
                     <li class="messages__contacts-item<!-- messages__contacts-item--new-->">
-                        <a class="messages__contacts-tab tabs__item<?php if ($id === $user['id']): ?> messages__contacts-tab--active tabs__item tabs__item--active <?php endif; ?>" href="/messages.php?id=<?=$user['id']; ?>">
+                        <a class="messages__contacts-tab tabs__item<?php if ($id === $user['id']) :
+                            ?> messages__contacts-tab--active tabs__item tabs__item--active <?php
+                                                                   endif; ?>" href="/messages.php?id=<?=$user['id']; ?>">
                             <div class="messages__avatar-wrapper">
                                 <img class="messages__avatar" src="img/<?=$user['avatar_img']; ?>" alt="Аватар пользователя">
                                 <!--<i class="messages__indicator">2</i>-->
@@ -30,11 +32,13 @@
                 </ul>
             </div>
             <div class="messages__chat">
-                <?php if ($messages): ?>
+                <?php if ($messages) : ?>
                 <div class="messages__chat-wrapper">
                     <ul class="messages__list tabs__content tabs__content--active">
-                        <?php foreach ($messages as $message): ?>
-                        <li class="messages__item<?php if ($auth_user['id'] === $message['from_user_id']): ?> messages__item--my<?php endif; ?>">
+                        <?php foreach ($messages as $message) : ?>
+                        <li class="messages__item<?php if ($auth_user['id'] === $message['from_user_id']) :
+                            ?> messages__item--my<?php
+                                                 endif; ?>">
                             <div class="messages__info-wrapper">
                                 <div class="messages__item-avatar">
                                     <a class="messages__author-link" href="/profile.php?id=<?=$message['id']; ?>">
@@ -58,13 +62,15 @@
                     </ul>            
                 </div>
                 <?php endif; ?>
-                <?php if ($user_list): ?>
+                <?php if ($user_list) : ?>
                 <div class="comments">
                     <form class="comments__form form" action="/messages.php?<?=http_build_query(['id' => $id]); ?>" method="post">
                         <div class="comments__my-avatar">
                             <img class="comments__picture" src="img/<?=$auth_user['avatar_img']; ?>" alt="Аватар пользователя">
                         </div>
-                        <div class="form__input-section<?php if ($errors): ?> form__input-section--error<?php endif; ?>">
+                        <div class="form__input-section<?php if ($errors) :
+                            ?> form__input-section--error<?php
+                                                       endif; ?>">
                             <textarea class="comments__textarea form__textarea form__input" name="text"
                                 placeholder="Ваше сообщение"><?=$content; ?></textarea>
                             <label class="visually-hidden">Ваше сообщение</label>

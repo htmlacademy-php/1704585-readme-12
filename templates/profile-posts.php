@@ -1,22 +1,22 @@
 <div class="profile__tab-content">
     <section class="profile__posts tabs__content tabs__content--active">
         <h2 class="visually-hidden">Публикации</h2>
-        <?php foreach ($content as $post): ?>
+        <?php foreach ($content as $post) : ?>
             <article class="feed__post post post-<?=$post['class']?>">
                 <div class="post__main">
-                    <?php if ($post['type'] === 'Картинка'): ?>
+                    <?php if ($post['type'] === 'Картинка') : ?>
                         <h2><a href="/post.php?id=<?=$post['id']; ?>"><?=$post['title']; ?></a></h2>
                         <div class="post-<?=$post['class']; ?>__image-wrapper">
                             <img src="uploads/<?=$post['img']; ?>" alt="Фото от пользователя" width="760" height="396">
                         </div>
                     <?php endif; ?>
 
-                    <?php if ($post['type'] === 'Текст'): ?>
+                    <?php if ($post['type'] === 'Текст') : ?>
                         <h2><a href="/post.php?id=<?=$post['id']; ?>"><?=$post['title']; ?></a></h2>
                             <?=cut_string($post['content']); ?>
-                        <?php endif; ?>
+                    <?php endif; ?>
 
-                    <?php if ($post['type'] === 'Видео'): ?>
+                    <?php if ($post['type'] === 'Видео') : ?>
                         <div class="post-video__block">
                             <div class="post-video__preview">
                                 <img src="img/coast.jpg" alt="Превью к видео" width="760" height="396">
@@ -41,7 +41,7 @@
                         </div>
                     <?php endif; ?>
 
-                    <?php if ($post['type'] === 'Цитата'): ?>
+                    <?php if ($post['type'] === 'Цитата') : ?>
                         <blockquote>
                             <p>
                                 <?=$post['content']; ?>
@@ -50,7 +50,7 @@
                         </blockquote>
                     <?php endif; ?>
 
-                    <?php if ($post['type'] === 'Ссылка'): ?>
+                    <?php if ($post['type'] === 'Ссылка') : ?>
                         <div class="post-link__wrapper">
                             <a class="post-link__external" href="<?=$post['link']; ?>" title="Перейти по ссылке">
                                 <div class="post-link__icon-wrapper">
