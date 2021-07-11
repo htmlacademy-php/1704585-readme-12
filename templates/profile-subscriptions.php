@@ -2,7 +2,7 @@
     <section class="profile__subscriptions tabs__content tabs__content--active">
     <h2 class="visually-hidden">Подписки</h2>
         <ul class="profile__subscriptions-list">
-            <?php foreach ($content as $subscription): ?>
+            <?php foreach ($content as $subscription) : ?>
                 <li class="post-mini post-mini--photo post user">
                     <div class="post-mini__user-info user__info">
                         <div class="post-mini__avatar user__avatar">
@@ -27,11 +27,11 @@
                             <span class="post-mini__rating-text user__rating-text">подписчиков</span>
                         </p>
                     </div>
-                    <?php if ($user['id'] !== $subscription['id']): ?>
+                    <?php if ($user['id'] !== $subscription['id']) : ?>
                     <div class="post-mini__user-buttons user__buttons">
-                        <?php if (!in_array($subscription['id'], $user_subscriptions)): ?>
+                        <?php if (!in_array($subscription['id'], $user_subscriptions)) : ?>
                             <button class="post-mini__user-button user__button user__button--subscription button button--main" onClick='location.href="/unsubscribe.php?id=<?=$subscription['id']; ?>"' type="button">Подписаться</button>
-                        <?php else: ?>
+                        <?php else : ?>
                             <button class="post-mini__user-button user__button user__button--subscription button button--quartz" onClick='location.href="/unsubscribe.php?id=<?=$subscription['id']; ?>"' type="button">Отписаться</button>
                         <?php endif; ?>
                     </div>

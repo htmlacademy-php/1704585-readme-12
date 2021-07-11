@@ -285,7 +285,7 @@ function cut_string($string, $length = 300, $is_simple = false)
 
 /**
  * Фунуция фильтрует пользовательский архив с постами заменяя HTML-теги на HTML-мнемоники
- * @param array $post массив с пользавательскими постами
+ * @param array $posts массив с пользавательскими постами
  * @return array массив с отфильтрованными данными
  */
 function filter_posts($posts)
@@ -293,16 +293,31 @@ function filter_posts($posts)
     $new_posts = [];
     if ($posts) {
         foreach ($posts as $post) {
-            $new_post = [];
-            foreach ($post as $key => $string) {
-                if (is_string($string)) {
-                    $new_post[$key] = htmlspecialchars($string);
-                }
-            }
+            $new_post = filter_post($post);
             array_push($new_posts, $new_post);
         }
     }
     return $new_posts;
+}
+
+/**
+ * Функция фильтрует одиночный пост заменяя HTML-теги на HTML-мнемоники
+ * @param array $post массив с постом
+ * @return array массив с отфильтрованными данными
+ */
+function filter_post($post)
+{
+    $new_post = [];
+    if ($post) {
+        foreach ($post as $key => $string) {
+            if (is_string($string)) {
+                $new_post[$key] = htmlspecialchars($string);
+            } else {
+                $new_post[$key] = $string;
+            }
+        }
+    }
+    return $new_post;
 }
 
 /**
@@ -317,7 +332,8 @@ function add_time_to_post(&$posts)
 }
 
 /**
- * Функция преобразовывает дату в относительный формат. Заменяет дату на сообщение сколько времени назад произошло событие
+ * Функция преобразовывает дату в относительный формат.
+ * Заменяет дату на сообщение сколько времени назад произошло событие
  * @param string $datetime входящая дата
  * @param string $end_string окончание сообщения о времени, по умолчанию = назад
  * @return string результирующая строка сообщения
@@ -365,7 +381,8 @@ function make_datetime_relative($datetime, $end_string = " назад")
  * Функция выполняет запрос SELECT и возвращает из базы готовый массив с запрошенными данными
  * @param mysqli $db_link подключение к базе данных
  * @param string $sql строка запроса на выборку данных
- * @param boolean $one параметр определяет возвращаемый результат двумерный массив или просто массив с данными, по умолчанию false
+ * @param boolean $one параметр определяет возвращаемый результат двумерный массив или просто массив с данными,
+ * по умолчанию false
  * @return array готовый массив с данными
  */
 function make_select_query($db_link, $sql, $one = false)

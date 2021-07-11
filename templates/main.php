@@ -7,9 +7,11 @@
                 <div class="popular__sorting sorting">
                     <b class="popular__sorting-caption sorting__caption">Сортировка:</b>
                     <ul class="popular__sorting-list sorting__list">
-                        <?php foreach ($sort_types as $sort_type): ?>
+                        <?php foreach ($sort_types as $sort_type) : ?>
                             <li class="sorting__item">
-                                <a class="sorting__link<?php if ($sort === $sort_type['id']): ?> sorting__link--active <?php endif; ?>" 
+                                <a class="sorting__link<?php if ($sort === $sort_type['id']) :
+                                    ?> sorting__link--active <?php
+                                                       endif; ?>" 
                                 href="/popular.php?<?=http_build_query(array_merge($_GET, [ 'order_by' => $sort_type['id'] ])); ?>">
                                     <span><?=$sort_type['title']; ?></span>
                                     <svg class="sorting__icon" width="10" height="12">
@@ -30,10 +32,12 @@
                                 <span>Все</span>
                             </a>
                         </li>
-                        <?php foreach ($post_types as $types): ?>
+                        <?php foreach ($post_types as $types) : ?>
                             <li class="popular__filters-item filters__item">
                                 <a class="filters__button filters__button--<?=$types['icon_class']; ?> button
-                                <?php if ($id === $types['id']): ?> filters__button--active <?php endif; ?>" 
+                                <?php if ($id === $types['id']) :
+                                    ?> filters__button--active <?php
+                                endif; ?>" 
                                 href="/popular.php?<?=http_build_query(array_merge($_GET, [ 'id' => $types['id'] ])); ?>">
                                     <span class="visually-hidden"><?=$types['type_name']; ?></span>
                                     <svg class="filters__icon" width="22" height="18">
@@ -46,14 +50,14 @@
                 </div>
             </div>
             <div class="popular__posts">
-            <?php foreach ($posts as $post): ?>
+            <?php foreach ($posts as $post) : ?>
                 <article class="popular__post post <?='post-' . $post['class']; ?>">
                     <header class="post__header">
                         <h2><a href="/post.php?id=<?=$post['id']; ?>"><?=$post['title']; ?></a></h2>
                     </header>
                     <div class="post__main">
 
-                        <?php if ($post['type'] === "Цитата"): ?>
+                        <?php if ($post['type'] === "Цитата") : ?>
                         <blockquote>
                             <p>
                                 <!--здесь текст-->
@@ -63,7 +67,7 @@
                         </blockquote>
                         <?php endif; ?>
 
-                        <?php if ($post['type'] === "Ссылка"): ?>
+                        <?php if ($post['type'] === "Ссылка") : ?>
                         <div class="post-link__wrapper">
                             <a class="post-link__external" href="http://<?=$post['link']; ?>" title="Перейти по ссылке">
                                 <div class="post-link__info-wrapper">
@@ -79,13 +83,13 @@
                         </div>
                         <?php endif; ?>
 
-                        <?php if ($post['type'] === "Картинка"): ?>
+                        <?php if ($post['type'] === "Картинка") : ?>
                         <div class="post-photo__image-wrapper">
                             <img src="uploads/<?=$post['img']; ?>" alt="Фото от пользователя" width="360" height="240">
                         </div>
                         <?php endif; ?>
 
-                        <?php if ($post['type'] === "Видео"): ?>
+                        <?php if ($post['type'] === "Видео") : ?>
                         <div class="post-video__block">
                             <div class="post-video__preview">
                                 <?=embed_youtube_cover($post['video']); ?>
@@ -100,8 +104,8 @@
                         </div>
                         <?php endif; ?>
 
-                        <?php if ($post['type'] === "Текст"): ?>
-                        <?=cut_string($post['content']); ?><!--здесь текст-->
+                        <?php if ($post['type'] === "Текст") : ?>
+                            <?=cut_string($post['content']); ?><!--здесь текст-->
                         <?php endif; ?>
                     </div>
                     <footer class="post__footer">
@@ -144,7 +148,7 @@
                 </article>
             <?php endforeach; ?>
         </div>
-            <?php if ($pages_count > 1): ?>
+            <?php if ($pages_count > 1) : ?>
                 <div class="popular__page-links">
                     <a class="popular__page-link popular__page-link--prev button button--gray" href="/popular.php?<?=http_build_query(array_merge($_GET, ['page' => $current_page - 1])); ?>">Предыдущая страница</a>
                     <a class="popular__page-link popular__page-link--next button button--gray" href="/popular.php?<?=http_build_query(array_merge($_GET, ['page' => $current_page + 1])); ?>">Следующая страница</a>

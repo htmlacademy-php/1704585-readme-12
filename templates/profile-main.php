@@ -22,11 +22,11 @@
                     <span class="profile__rating-text user__rating-text">подписчиков</span>
                 </p>
             </div>
-            <?php if ($user_profile['id'] !== $user['id']): ?>
+            <?php if ($user_profile['id'] !== $user['id']) : ?>
             <div class="profile__user-buttons user__buttons">
-                <?php if (!$is_subscribe): ?>
+                <?php if (!$is_subscribe) : ?>
                     <button class="profile__user-button user__button user__button--subscription button button--main" onClick='location.href="/subscribe.php?id=<?=$user_profile['id']; ?>"' type="button">Подписаться</button>
-                <?php else: ?>
+                <?php else : ?>
                     <button class="profile__user-button user__button user__button--subscription button button--quartz" onClick='location.href="/unsubscribe.php?id=<?=$user_profile['id']; ?>"' type="button">Отписаться</button>
                 <?php endif; ?>
                 <a class="profile__user-button user__button user__button--writing button button--green" href="/messages.php?id=<?=$user_profile['id']; ?>">Сообщение</a>
@@ -38,9 +38,13 @@
                 <div class="profile__tabs filters">
                     <b class="profile__tabs-caption filters__caption">Показать:</b>
                     <ul class="profile__tabs-list filters__list tabs__list">
-                        <?php foreach ($tabs as $element): ?>
+                        <?php foreach ($tabs as $element) : ?>
                             <li class="profile__tabs-item filters__item tabs__item">
-                                <a class="profile__tabs-link filters__button <?php if ($tab === $element['tab']): ?>filters__button--active button"<?php else: ?> button" href="/profile.php?<?=http_build_query(array_merge($_GET, ['tab' => $element['tab']]));?>"<?php endif; ?>><?=$element['title']; ?></a>
+                                <a class="profile__tabs-link filters__button <?php if ($tab === $element['tab']) :
+                                    ?>filters__button--active button"<?php
+                                                                             else :
+                                                                                    ?> button" href="/profile.php?<?=http_build_query(array_merge($_GET, ['tab' => $element['tab']]));?>"<?php
+                                                                             endif; ?>><?=$element['title']; ?></a>
                             </li>
                         <?php endforeach; ?>
                     </ul>
