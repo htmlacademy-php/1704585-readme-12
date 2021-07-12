@@ -22,11 +22,6 @@ $post_types = make_select_query($db_link, "SELECT * FROM types;");
 
 if (isset($_GET['id'])) {
     $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
-<<<<<<< HEAD
-=======
-} else {
-    $id = '1';
->>>>>>> 6fd97d814d5c9346a73b9e9c74019cc6738ae586
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
