@@ -286,7 +286,7 @@ function cut_string($string, $length = 300, $is_simple = false)
 /**
  * Фунуция фильтрует пользовательский архив с постами заменяя HTML-теги на HTML-мнемоники
  * @param array $posts массив с пользавательскими постами
- * @return array массив с отфильтрованными данными
+ * @return array массив с отфильтрованными данными или пустой архив
  */
 function filter_posts($posts)
 {
@@ -303,12 +303,11 @@ function filter_posts($posts)
 /**
  * Функция фильтрует одиночный пост заменяя HTML-теги на HTML-мнемоники
  * @param array $post массив с постом
- * @return array массив с отфильтрованными данными
+ * @return array массив с отфильтрованными данными или пустой архив
  */
 function filter_post($post)
 {
     $new_post = [];
-<<<<<<< HEAD
     if ($post) {
         foreach ($post as $key => $string) {
             if (is_string($string)) {
@@ -316,13 +315,6 @@ function filter_post($post)
             } else {
                 $new_post[$key] = $string;
             }
-=======
-    foreach ($post as $key => $string) {
-        if (is_string($string)) {
-            $new_post[$key] = htmlspecialchars($string);
-        } else {
-            $new_post[$key] = $string;
->>>>>>> 6fd97d814d5c9346a73b9e9c74019cc6738ae586
         }
     }
     return $new_post;
