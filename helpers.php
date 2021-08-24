@@ -308,11 +308,21 @@ function filter_posts($posts)
 function filter_post($post)
 {
     $new_post = [];
+<<<<<<< HEAD
+    if ($post) {
+        foreach ($post as $key => $string) {
+            if (is_string($string)) {
+                $new_post[$key] = htmlspecialchars($string);
+            } else {
+                $new_post[$key] = $string;
+            }
+=======
     foreach ($post as $key => $string) {
         if (is_string($string)) {
             $new_post[$key] = htmlspecialchars($string);
         } else {
             $new_post[$key] = $string;
+>>>>>>> 6fd97d814d5c9346a73b9e9c74019cc6738ae586
         }
     }
     return $new_post;

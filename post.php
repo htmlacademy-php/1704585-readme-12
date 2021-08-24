@@ -15,8 +15,11 @@ $is_subscribe = 0;
 
 if (isset($_GET['id'])) {
     $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+<<<<<<< HEAD
+=======
 } else {
     $id = 0;
+>>>>>>> 6fd97d814d5c9346a73b9e9c74019cc6738ae586
 }
 
 if ($db_link == false) {

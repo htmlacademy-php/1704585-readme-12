@@ -3,6 +3,8 @@ require_once('helpers.php');
 require_once('init.php');
 require_once('mail.php');
 
+$id = null;
+
 if ($db_link == false) {
     print("Ошибка подключения: " . mysqli_connect_error());
     die();
@@ -12,8 +14,11 @@ mysqli_set_charset($db_link, "utf8");
 
 if (isset($_GET['id'])) {
     $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+<<<<<<< HEAD
+=======
 } else {
     $id = null;
+>>>>>>> 6fd97d814d5c9346a73b9e9c74019cc6738ae586
 }
 
 if ($id) {
